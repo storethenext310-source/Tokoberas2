@@ -1,0 +1,4871 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#16a34a">
+
+<link rel="apple-touch-icon" href="./icon-192.png">
+  
+<title>DIRRICE - Rice Blending Management</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Plus Jakarta Sans',sans-serif;
+}
+
+body{
+background:#f5f7fb;
+color:#1f2937;
+padding-bottom:90px;
+}
+
+:root{
+--green:#16a34a;
+--green2:#22c55e;
+--bg:#f5f7fb;
+--card:#ffffff;
+--border:#e5e7eb;
+--text:#1f2937;
+--muted:#6b7280;
+--shadow:0 10px 25px rgba(0,0,0,.06);
+}
+
+.container{
+max-width:700px;
+margin:auto;
+}
+
+/* =======================
+HEADER
+======================= */
+
+.header{
+background:linear-gradient(135deg,#16a34a,#22c55e);
+padding:28px 20px;
+color:white;
+border-bottom-left-radius:24px;
+border-bottom-right-radius:24px;
+}
+
+.app-title{
+font-size:28px;
+font-weight:800;
+}
+
+.app-sub{
+margin-top:6px;
+font-size:14px;
+opacity:.9;
+}
+
+.summary{
+margin-top:22px;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+}
+
+.sum-card{
+background:rgba(255,255,255,.15);
+padding:16px;
+border-radius:16px;
+backdrop-filter:blur(8px);
+}
+
+.sum-title{
+font-size:12px;
+opacity:.9;
+}
+
+.sum-value{
+margin-top:8px;
+font-size:22px;
+font-weight:800;
+}
+
+/* =======================
+SECTIONS & PAGES
+======================= */
+
+.section{
+padding:18px;
+}
+
+.page {
+display: none;
+}
+
+.page.active {
+display: block;
+}
+
+.section-title{
+font-size:18px;
+font-weight:800;
+margin-bottom:14px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.menu-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;
+}
+
+.menu-card{
+background:white;
+border-radius:18px;
+padding:20px;
+box-shadow:var(--shadow);
+border:1px solid var(--border);
+transition:.2s;
+cursor: pointer;
+}
+
+.menu-card:hover {
+transform: translateY(-2px);
+border-color: var(--green);
+}
+
+.menu-card i{
+font-size:26px;
+color:var(--green);
+}
+
+.menu-name{
+margin-top:14px;
+font-weight:700;
+font-size:15px;
+}
+
+.menu-desc{
+margin-top:6px;
+font-size:12px;
+color:var(--muted);
+line-height:1.5;
+}
+
+/* =======================
+LIST & CARDS
+======================= */
+
+.list-card{
+margin-top:16px;
+background:white;
+border-radius:18px;
+padding:16px;
+box-shadow:var(--shadow);
+}
+
+.item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:12px 0;
+border-bottom:1px solid #eee;
+gap: 12px;
+}
+
+.item:last-child{
+border:none;
+}
+
+.item-info {
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.item-img {
+width: 50px;
+height: 50px;
+border-radius: 10px;
+object-fit: cover;
+border: 1px solid var(--border);
+background: #f3f4f6;
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--muted);
+font-size: 20px;
+}
+
+.badge{
+background:#dcfce7;
+color:#15803d;
+padding:6px 12px;
+border-radius:30px;
+font-size:12px;
+font-weight:700;
+}
+
+.badge-warning {
+background:#fef3c7;
+color:#d97706;
+}
+
+.badge-info {
+background:#e0f2fe;
+color:#0369a1;
+}
+
+.badge-danger {
+background:#fee2e2;
+color:#dc2626;
+}
+
+.btn-primary {
+background: var(--green);
+color: white;
+border: none;
+padding: 10px 16px;
+border-radius: 10px;
+font-weight: 700;
+font-size: 13px;
+cursor: pointer;
+display: inline-flex;
+align-items: center;
+gap: 6px;
+}
+
+.btn-primary:hover {
+background: #15803d;
+}
+
+.btn-secondary {
+background: #f3f4f6;
+color: var(--text);
+border: 1px solid var(--border);
+padding: 10px 16px;
+border-radius: 10px;
+font-weight: 600;
+font-size: 13px;
+cursor: pointer;
+}
+
+.btn-danger {
+background: #ef4444;
+color: white;
+border: none;
+padding: 8px 12px;
+border-radius: 8px;
+font-size: 12px;
+cursor: pointer;
+}
+
+/* =======================
+FINANCIAL CARDS
+======================= */
+.fin-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 10px;
+margin-top: 14px;
+}
+
+.fin-card {
+background: #ffffff;
+padding: 12px;
+border-radius: 12px;
+border: 1px solid var(--border);
+box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+.fin-card-title {
+font-size: 11px;
+color: var(--muted);
+font-weight: 600;
+}
+
+.fin-card-value {
+font-size: 15px;
+font-weight: 800;
+margin-top: 6px;
+}
+
+
+/* =======================
+TUTORIAL STYLES
+======================= */
+
+.step-card {
+background: #ffffff;
+border-radius: 14px;
+padding: 14px;
+border: 1px solid var(--border);
+margin-bottom: 14px;
+}
+
+.step-header {
+display: flex;
+align-items: center;
+gap: 10px;
+margin-bottom: 10px;
+}
+
+.step-num {
+background: var(--green);
+color: white;
+width: 24px;
+height: 24px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 12px;
+font-weight: 700;
+}
+
+.step-title {
+font-weight: 700;
+font-size: 14px;
+}
+
+.step-media {
+width: 100%;
+max-height: 250px;
+object-fit: cover;
+border-radius: 10px;
+margin-bottom: 10px;
+border: 1px solid var(--border);
+background: #000;
+}
+
+.step-desc {
+font-size: 13px;
+color: var(--muted);
+line-height: 1.5;
+}
+
+/* =======================
+FORM & MODAL
+======================= */
+
+.modal {
+display: none;
+position: fixed;
+top: 0; left: 0; right: 0; bottom: 0;
+background: rgba(0,0,0,0.5);
+z-index: 1000;
+align-items: center;
+justify-content: center;
+padding: 20px;
+}
+
+.modal.active {
+display: flex;
+}
+
+.modal-content {
+background: white;
+border-radius: 20px;
+width: 100%;
+max-width: 500px;
+padding: 24px;
+max-height: 90vh;
+overflow-y: auto;
+}
+
+.form-group {
+margin-bottom: 14px;
+}
+
+.form-group label {
+display: block;
+font-size: 12px;
+font-weight: 700;
+margin-bottom: 6px;
+color: var(--muted);
+}
+
+.form-group input, .form-group select, .form-group textarea {
+width: 100%;
+padding: 10px 14px;
+border-radius: 10px;
+border: 1px solid var(--border);
+outline: none;
+font-size: 14px;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+border-color: var(--green);
+}
+
+.form-row {
+display: flex;
+gap: 10px;
+align-items: flex-end;
+}
+
+.form-row .form-group {
+flex: 1;
+}
+
+/* =======================
+BOTTOM NAV
+======================= */
+
+.bottom{
+position:fixed;
+left:0;
+right:0;
+bottom:0;
+background:white;
+display:grid;
+grid-template-columns:repeat(5,1fr);
+padding:10px 0;
+border-top:1px solid #ddd;
+z-index: 100;
+}
+
+.bottom button{
+background:none;
+border:none;
+color:#888;
+font-size:12px;
+cursor: pointer;
+transition: .2s;
+}
+
+.bottom button.active {
+color: var(--green);
+font-weight: 700;
+}
+
+.bottom i{
+display:block;
+font-size:20px;
+margin-bottom:5px;
+color:inherit;
+}
+
+.sales-total{
+font-size:14px;
+font-weight:800;
+color:#16a34a;
+text-align:right;
+line-height:1.1;
+}
+
+.sales-total small{
+display:block;
+font-size:12px;
+color:#64748b;
+font-weight:600;
+}
+
+.header-bell{
+
+    position:absolute;
+    top:36px;
+    right:30px;
+
+    width:28px;
+    height:28px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+}
+
+.header-bell i{
+
+    font-size:26px;
+    color:#fff;
+
+    transform-origin:50% 0%;
+    animation:bellShake 2s infinite ease-in-out;
+
+}
+
+.bell-badge{
+
+    position:absolute;
+
+    top:-4px;
+    right:-4px;
+
+    width:16px;
+    height:16px;
+
+    border-radius:50%;
+
+    background:#ef4444;
+    color:#fff;
+
+    font-size:10px;
+    font-weight:700;
+    line-height:16px;
+    text-align:center;
+
+    border:2px solid #22c55e;
+
+    z-index:10;
+
+}
+
+@keyframes bellShake{
+
+0%,70%,100%{
+    transform:rotate(0deg);
+}
+
+74%{
+    transform:rotate(18deg);
+}
+
+78%{
+    transform:rotate(-18deg);
+}
+
+82%{
+    transform:rotate(14deg);
+}
+
+86%{
+    transform:rotate(-14deg);
+}
+
+90%{
+    transform:rotate(8deg);
+}
+
+94%{
+    transform:rotate(-8deg);
+}
+
+}
+
+.kas-filter{
+margin:16px 0;
+}
+
+.kas-filter select{
+
+width:100%;
+height:52px;
+
+padding:0 16px;
+
+background:#fff;
+
+border:1px solid #e5e7eb;
+border-radius:16px;
+
+font-size:15px;
+font-weight:600;
+color:#1f2937;
+
+outline:none;
+
+box-shadow:0 8px 20px rgba(0,0,0,.05);
+
+appearance:none;
+-webkit-appearance:none;
+
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%236b7280' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+
+background-repeat:no-repeat;
+background-position:right 16px center;
+
+padding-right:50px;
+
+}
+
+.kas-filter select:focus{
+
+border-color:#16a34a;
+
+box-shadow:0 0 0 4px rgba(34,197,94,.15);
+
+}
+
+/* ==========================
+RIWAYAT BUKU KAS
+========================== */
+
+.kas-item{
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+gap:12px;
+
+padding:16px;
+
+border-bottom:1px solid #f1f5f9;
+
+}
+
+.kas-item:last-child{
+
+border-bottom:none;
+
+}
+
+.kas-icon{
+
+width:46px;
+height:46px;
+
+border-radius:14px;
+
+background:#dcfce7;
+color:#16a34a;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:18px;
+
+flex-shrink:0;
+
+}
+
+.kas-icon.keluar{
+
+background:#fee2e2;
+color:#dc2626;
+
+}
+
+.kas-info{
+
+flex:1;
+
+}
+
+.kas-title{
+
+font-size:15px;
+font-weight:700;
+color:#1f2937;
+
+}
+
+.kas-meta{
+
+margin-top:4px;
+
+font-size:12px;
+color:#6b7280;
+
+}
+
+.kas-right{
+
+text-align:right;
+
+}
+
+.kas-nominal{
+
+font-size:16px;
+font-weight:800;
+
+}
+
+.kas-nominal.masuk{
+
+color:#16a34a;
+
+}
+
+.kas-nominal.keluar{
+
+color:#dc2626;
+
+}
+
+.kas-action{
+
+display:flex;
+justify-content:flex-end;
+
+gap:14px;
+
+margin-top:8px;
+
+color:#9ca3af;
+
+font-size:15px;
+
+}
+
+.kas-action i{
+
+cursor:pointer;
+
+}
+
+.kas-action i:hover{
+
+color:#16a34a;
+
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- ================= DASHBOARD PAGE ================= -->
+<div id="page-home" class="page active">
+
+<div class="header">
+<div class="app-title">DIRRICE</div>
+
+<div class="app-sub">Rice Blending Management System</div>
+
+<div class="header-bell" onclick="bukaTips()">
+    <i class="fa-solid fa-bell"></i>
+    <span class="bell-badge" id="bellBadge">1</span>
+</div>
+
+<div class="summary">
+<div class="sum-card">
+<div class="sum-title">Master Beras</div>
+<div class="sum-value" id="totalBeras">0</div>
+</div>
+
+<div class="sum-card">
+<div class="sum-title">Formula</div>
+<div class="sum-value" id="totalFormula">0</div>
+</div>
+
+<div class="sum-card">
+<div class="sum-title">Stok Fisik Gudang</div>
+<div class="sum-value" id="totalStok">0 Kg</div>
+</div>
+
+<div class="sum-card">
+<div class="sum-title">Pricelist Item</div>
+<div class="sum-value" id="totalPricelist">0</div>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<div class="section-title">Menu Utama</div>
+
+<div class="menu-grid">
+
+<div class="menu-card" onclick="bukaHalaman('page-omset')">
+<i class="fa-solid fa-wallet"></i>
+<div class="menu-name">Omset & Profit</div>
+<div class="menu-desc">Laporan omset harian, mingguan, bulanan & keuntungan.</div>
+</div>
+
+<div class="menu-card" onclick="bukaHalaman('page-sales')">
+<i class="fa-solid fa-cart-shopping"></i>
+<div class="menu-name">Penjualan (Sales)</div>
+<div class="menu-desc">Catat penjualan beras dan pemotongan stok otomatis.</div>
+</div>
+
+<div class="menu-card" onclick="bukaHalaman('page-master')">
+<i class="fa-solid fa-seedling"></i>
+<div class="menu-name">Master Beras</div>
+<div class="menu-desc">Database seluruh jenis beras bahan baku mentah.</div>
+</div>
+
+<div class="menu-card" onclick="bukaHalaman('page-formula')">
+<i class="fa-solid fa-flask"></i>
+<div class="menu-name">Formula Blending</div>
+<div class="menu-desc">Menyusun resep campuran.</div>
+</div>
+
+<div class="menu-card" onclick="bukaHalaman('page-pricelist')">
+<i class="fa-solid fa-tags"></i>
+<div class="menu-name">Pricelist Menu</div>
+<div class="menu-desc">Kelola daftar harga jual produk beras siap edar.</div>
+</div>
+
+<div class="menu-card" onclick="bukaHalaman('page-produksi')">
+<i class="fa-solid fa-scale-balanced"></i>
+<div class="menu-name">Produksi</div>
+<div class="menu-desc">Hitung kebutuhan bahan & proses produksi batch.</div>
+</div>
+
+<div class="menu-card" onclick="bukaHalaman('page-history')">
+<i class="fa-solid fa-clock-rotate-left"></i>
+<div class="menu-name">Riwayat Batch</div>
+<div class="menu-desc">Catatan penggunaan bahan baku blending produksi.</div>
+</div>
+
+<div class="menu-card" onclick="bukaHalaman('page-gudang')">
+<i class="fa-solid fa-warehouse"></i>
+<div class="menu-name">Gudang</div>
+<div class="menu-desc">Manajemen stok bahan baku dan produk blending.</div>
+</div>
+
+<div class="menu-card" onclick="bukaHalaman('page-qc')">
+    <i class="fa-solid fa-book-open"></i>
+    <div class="menu-name">Catatan Pengetahuan</div>
+    <div class="menu-desc">
+        Kumpulan pengetahuan, tips dan informasi penting tentang beras.
+    </div>
+</div>
+
+<div class="menu-card" onclick="bukaHalaman('page-hpp')">
+<i class="fa-solid fa-chart-line"></i>
+<div class="menu-name">HPP & Profit</div>
+<div class="menu-desc">Analisis biaya produksi dan keuntungan.</div>
+</div>
+
+<div class="menu-card" onclick="bukaHalaman('page-tutorial')">
+<i class="fa-solid fa-graduation-cap"></i>
+<div class="menu-name">Tutorial Training</div>
+<div class="menu-desc">Panduan langkah bergambar & video untuk karyawan baru.</div>
+</div>
+
+<div class="menu-card" onclick="bukaHalaman('page-kas')">
+    <i class="fa-solid fa-book"></i>
+    <div class="menu-name">Buku Kas</div>
+    <div class="menu-desc">
+        Catatan kas masuk, kas keluar dan saldo usaha.
+    </div>
+</div>
+
+
+</div>
+
+<div class="list-card">
+<div class="section-title">Aktivitas Terakhir</div>
+<div id="aktivitasList">
+<!-- Dynamically rendered via JS -->
+</div>
+</div>
+</div>
+</div>
+
+
+
+<!-- ================= LAPORAN OMSET & PROFIT PAGE ================= -->
+<div id="page-omset" class="page">
+<div class="section">
+<div class="section-title">
+Laporan Omset & Profit
+</div>
+
+<!-- FILTER PERIODE WAKTU -->
+<div class="list-card" style="margin-top:0;">
+<div class="form-group">
+<label>Pilih Filter Periode / Tanggal</label>
+<select id="omsetFilter" onchange="toggleFilterOption()">
+<option value="today">Hari Ini</option>
+<option value="yesterday">Kemarin</option>
+<option value="7days">7 Hari Terakhir</option>
+<option value="thisMonth">Bulan Ini (30 Hari)</option>
+<option value="thisYear" selected>Tahun Ini</option>
+<option value="customDate">Tanggal Spesifik</option>
+<option value="all">Semua Riwayat Penjualan</option>
+</select>
+</div>
+
+<div class="form-group" id="groupCustomDate" style="display:none;">
+<label>Tanggal yang Dipilih</label>
+<input type="date" id="omsetCustomDate" onchange="renderOmsetReport()">
+</div>
+</div>
+
+<!-- RINGKASAN REKAP FINANSIAL & KG TERJUAL DENGAN PERBANDINGAN -->
+<div class="fin-grid">
+<div class="fin-card">
+<div class="fin-card-title">OMSET KOTOR</div>
+<div class="fin-card-value" id="reportOmsetTotal" style="color:var(--green)">Rp 0</div>
+<small style="font-size:10px; color:var(--muted)" id="compOmset">vs lalu: Rp 0</small>
+</div>
+
+<div class="fin-card">
+<div class="fin-card-title">JUMLAH KG TERJUAL</div>
+<div class="fin-card-value" id="reportKgTotal" style="color:#0369a1">0 Kg</div>
+<small style="font-size:10px; color:var(--muted)" id="compKg">vs lalu: 0 Kg</small>
+</div>
+
+<div class="fin-card">
+<div class="fin-card-title">KEUNTUNGAN BERSIH</div>
+<div class="fin-card-value" id="reportUntungTotal" style="color:#d97706">Rp 0</div>
+<small style="font-size:10px; color:var(--muted)" id="reportMargin">0% Margin</small>
+</div>
+</div>
+
+<!-- RINCIAN TRANSAKSI DALAM PERIODE (1 Saja Tampil, Lainnya Open to See All) -->
+<div class="section-title" style="margin-top:20px; font-size:15px;">Rincian Transaksi Terfilter</div>
+<div id="omsetDetailList" class="list-card" style="margin-top:0;">
+<!-- Items render via JS -->
+</div>
+
+</div>
+</div>
+
+<!-- ================= SALES / PENJUALAN PAGE ================= -->
+<div id="page-sales" class="page">
+<div class="section">
+<div class="section-title">
+Penjualan Harian
+<button class="btn-primary" onclick="bukaModal('modalSales')"><i class="fa-solid fa-cart-plus"></i> Transaksi Baru</button>
+</div>
+
+<div class="list-card" style="margin-bottom:16px;">
+
+    <div class="section-title"
+         onclick="toggleSalesRanking()"
+         style="display:flex;
+                justify-content:space-between;
+                align-items:center;
+                cursor:pointer;">
+
+        <span>🏆 Ranking Penjualan Produk</span>
+
+        <span id="salesRankingArrow">▼</span>
+
+    </div>
+
+    <div id="salesRankingList"
+         style="display:none;margin-top:14px;">
+
+        <!-- Render JavaScript -->
+
+    </div>
+
+</div>
+
+<div id="salesHistoryList" class="list-card" style="margin-top:0;">
+  
+<!-- Items render via JS -->
+</div>
+</div>
+</div>
+
+<!-- ================= MASTER BERAS PAGE ================= -->
+<div id="page-master" class="page">
+<div class="section">
+<div class="section-title">
+Nama Merek Beras
+<button class="btn-primary" onclick="bukaModal('modalBeras')"><i class="fa-solid fa-plus"></i> Tambah</button>
+</div>
+
+<div id="masterBerasList" class="list-card">
+<!-- Items render via JS -->
+</div>
+</div>
+</div>
+
+<!-- ================= FORMULA PAGE ================= -->
+<div id="page-formula" class="page">
+<div class="section">
+<div class="section-title">
+Formula Blending
+<button class="btn-primary" onclick="bukaModal('modalFormula')"><i class="fa-solid fa-plus"></i> Buat Formula</button>
+</div>
+
+<div id="formulaList" class="list-card">
+<!-- Items render via JS -->
+</div>
+</div>
+</div>
+
+<!-- ================= MODAL EDIT FORMULA ================= -->
+
+<div class="modal" id="modalEditFormula">
+
+    <div class="modal-content">
+
+        <div class="section-title">
+            Edit Formula Blending
+        </div>
+
+        <form
+            id="formEditFormula"
+            onsubmit="simpanEditFormula(event)"
+        >
+
+            <input
+                type="hidden"
+                id="editFormulaId"
+            >
+
+            <div class="form-group">
+
+                <label>Foto Formula (Opsional)</label>
+
+                <input
+                    type="file"
+                    id="editFotoFormula"
+                    accept="image/*">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Nama Formula / Brand Hasil</label>
+
+                <input
+                    type="text"
+                    id="editNamaFormula"
+                    required
+                    placeholder="Contoh: Super Ramos Premium">
+
+            </div>
+
+
+            <div id="containerEditBahanFormula">
+
+                <!-- Baris bahan diisi oleh JavaScript -->
+
+            </div>
+
+
+            <button
+                type="button"
+                class="btn-secondary"
+                style="width:100%;margin-bottom:14px;"
+                onclick="tambahBarisEditBahan()">
+
+                <i class="fa-solid fa-plus"></i>
+                Tambah Bahan
+
+            </button>
+
+
+            <small
+                style="
+                    display:block;
+                    margin-bottom:15px;
+                    color:var(--muted);
+                "
+            >
+                * Total persentase seluruh bahan harus tepat 100%.
+            </small>
+
+
+            <div
+                style="
+                    display:flex;
+                    gap:10px;
+                    margin-top:20px;
+                "
+            >
+
+                <button
+                    type="button"
+                    class="btn-secondary"
+                    style="flex:1"
+                    onclick="tutupModal('modalEditFormula')">
+
+                    Batal
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                    style="
+                        flex:1;
+                        justify-content:center;
+                    "
+                >
+
+                    Simpan Perubahan
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- ================= PRICELIST PAGE ================= -->
+<div id="page-pricelist" class="page">
+<div class="section">
+
+<div class="section-title">
+
+    <span>Harga Jual</span>
+
+    <div style="display:flex;gap:8px;">
+
+        <input
+            id="searchPricelist"
+            type="text"
+            placeholder="Cari produk..."
+            onkeyup="cariPricelistRealtime()"
+            style="
+                width:180px;
+                padding:10px 14px;
+                border:1px solid #ddd;
+                border-radius:10px;
+                outline:none;
+            ">
+
+        <button class="btn-primary"
+            onclick="bukaModal('modalPricelist');loadProdukPricelist();">
+            <i class="fa-solid fa-plus"></i>
+            Tambah Harga
+        </button>
+
+    </div>
+
+</div>
+
+<div id="pricelistContainer" class="list-card">
+    <!-- Items render via JS -->
+</div>
+
+</div>
+</div>
+
+<!-- ================= PRODUKSI PAGE ================= -->
+<div id="page-produksi" class="page">
+<div class="section">
+<div class="section-title">Kalkulator & Eksekusi Produksi</div>
+
+<div class="list-card" style="margin-top:0;">
+<div class="form-group">
+<label>Pilih Formula Blending</label>
+<select id="prodFormulaSelect"></select>
+</div>
+<div class="form-group">
+<label>Target Produksi (Kg)</label>
+<input type="number" id="targetProduksi" placeholder="Contoh: 1000" value="1000">
+</div>
+<div class="form-group">
+<label>Nama Operator / Penanggung Jawab</label>
+<input type="text" id="operatorProduksi" placeholder="Contoh: Budi (Shift A)">
+</div>
+<button class="btn-primary" style="width: 100%; justify-content: center;" onclick="hitungProduksi()">Hitung Kebutuhan Bahan</button>
+</div>
+
+<div id="hasilKebutuhan" class="list-card" style="display:none;">
+<div class="section-title">Kebutuhan Bahan Baku</div>
+<div id="detailKebutuhan"></div>
+<button class="btn-primary" style="width: 100%; justify-content: center; margin-top: 16px; background: #0284c7;" onclick="eksekusiProduksi()">
+<i class="fa-solid fa-play"></i> Eksekusi Blending (Pindah ke Stok Hasil Blending)
+</button>
+</div>
+</div>
+</div>
+
+<!-- ================= RIWAYAT BATCH PAGE ================= -->
+<div id="page-history" class="page">
+<div class="section">
+<div class="section-title">Riwayat Batch Produksi</div>
+<div id="batchHistoryList" class="list-card" style="margin-top:0;">
+<!-- Items render via JS -->
+</div>
+</div>
+</div>
+
+<!-- ================= GUDANG PAGE ================= -->
+<div id="page-gudang" class="page">
+<div class="section">
+
+<div class="section-title">Total Stok Fisik Gudang</div>
+
+<div class="list-card"
+style="margin-top:0;margin-bottom:15px;background:#f0fdf4;border:1px solid #bbf7d0;">
+
+    <small style="color:#166534;font-weight:700;">
+        TOTAL BERAS DI GUDANG:
+    </small>
+
+    <div id="totalRingkasanGudang"
+    style="font-size:24px;font-weight:800;color:#15803d;margin-top:4px;">
+        0 Kg
+    </div>
+
+    <!-- TAMBAHKAN DI SINI -->
+
+    <div class="warehouse-value">
+
+        <small style="color:#166534;font-weight:700;">
+            💰 Nilai Persediaan
+        </small>
+
+        <div id="totalNilaiGudang"
+        style="font-size:20px;font-weight:800;color:#15803d;margin-top:4px;">
+            Rp 0
+        </div>
+
+    </div>
+
+    <!-- SAMPAI SINI -->
+
+    <small style="color:#15803d;">
+        (Kombinasi Bahan Mentah Master + Stok Hasil Blending Siap Jual)
+    </small>
+
+</div>
+
+<div class="section-title" style="font-size:15px;">1. Stok Bahan Mentah (Master Beras)</div>
+<div id="stokGudangMentahList" class="list-card" style="margin-top:0; margin-bottom:20px;">
+<!-- Dynamic via JS -->
+</div>
+
+<div class="section-title" style="font-size:15px;">2. Stok Hasil Blending (Siap Sales)</div>
+<div id="stokGudangBlendingList" class="list-card" style="margin-top:0;">
+<!-- Dynamic via JS -->
+</div>
+</div>
+</div>
+
+
+<!-- ================= CATATAN PENGETAHUAN PAGE ================= -->
+<div id="page-qc" class="page">
+<div class="section">
+
+    <div class="section-title">
+        <span>Catatan Pengetahuan</span>
+
+        <button class="btn-primary" onclick="bukaModal('modalPengetahuan')">
+            <i class="fa-solid fa-plus"></i> Tambah
+        </button>
+    </div>
+
+    <div id="pengetahuanList" class="list-card">
+        <!-- Catatan akan dirender melalui JavaScript -->
+    </div>
+
+</div>
+</div>
+<!-- ================= MODAL TAMBAH PENGETAHUAN ================= -->
+<div class="modal" id="modalPengetahuan">
+    <div class="modal-content">
+
+        <div class="section-title">
+            Tambah Catatan Pengetahuan
+        </div>
+
+        <form id="formPengetahuan" onsubmit="simpanPengetahuan(event)">
+
+            <div class="form-group">
+                <label>Judul Pengetahuan</label>
+                <input
+                    type="text"
+                    id="judulPengetahuan"
+                    required
+                    placeholder="Contoh: Cara Menyimpan Beras">
+            </div>
+
+            <div class="form-group">
+                <label>Kategori</label>
+                <select id="kategoriPengetahuan" required>
+                    <option value="">-- Pilih Kategori --</option>
+                    <option value="Beras">Beras</option>
+                    <option value="Blending">Blending</option>
+                    <option>Pengetahuan</option>
+                    <option>Harga Pasaran</option>
+                    <option value="Produksi">Produksi</option>
+                    <option value="Gudang">Gudang</option>
+                    <option value="Penjualan">Penjualan</option>
+                    <option value="Bisnis">Bisnis</option>
+                    <option value="Lainnya">Lainnya</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Isi Catatan</label>
+                <textarea
+                    id="isiPengetahuan"
+                    rows="6"
+                    required
+                    placeholder="Tuliskan pengetahuan, tips, pengalaman atau informasi penting di sini..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Foto / Gambar (Opsional)</label>
+                <input
+                    type="file"
+                    id="fotoPengetahuan"
+                    accept="image/*">
+            </div>
+
+            <div style="display:flex;gap:10px;margin-top:20px;">
+
+                <button
+                    type="button"
+                    class="btn-secondary"
+                    style="flex:1"
+                    onclick="tutupModal('modalPengetahuan')">
+                    Batal
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                    style="flex:1;justify-content:center;">
+                    Simpan
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<!-- ================= HPP PAGE ================= -->
+<div id="page-hpp" class="page">
+<div class="section">
+<div class="section-title">Analisis HPP & Profit</div>
+
+<!-- KALKULATOR HARGA & MARGIN -->
+<div class="list-card" style="margin-top:0; border: 2px solid var(--green);">
+<div class="section-title" style="font-size:15px; margin-bottom:10px;">
+<i class="fa-solid fa-calculator" style="color:var(--green)"></i> Simulasi Target Harga Jual
+</div>
+<div class="form-group">
+<label>Modal HPP / Kg (Rp)</label>
+<input type="number" id="simulasiHpp" placeholder="12800" value="12800" oninput="hitungSimulasiHarga()">
+</div>
+<div class="form-group">
+<label>Target Keuntungan (%)</label>
+<input type="number" id="simulasiTargetProfit" placeholder="15" value="15" oninput="hitungSimulasiHarga()">
+</div>
+<div id="hasilSimulasiHarga" style="background:#f0fdf4; padding:12px; border-radius:10px; margin-top:10px; font-size:13px; line-height:1.6;">
+<!-- Rendered by JS -->
+</div>
+</div>
+
+<div id="hppList" class="list-card">
+<!-- Dynamic via JS -->
+</div>
+
+<div id="profitAnalysisContainer" class="list-card">
+<div class="section-title" style="font-size:15px;">Keuntungan Produk Terdaftar</div>
+<div id="profitList">
+<!-- Dynamic via JS -->
+</div>
+</div>
+</div>
+</div>
+
+
+
+<!-- ================= TUTORIAL PAGE ================= -->
+<div id="page-tutorial" class="page">
+<div class="section">
+
+<div class="section-title">
+Panduan Training Karyawan
+<button class="btn-primary" onclick="bukaModal('modalTutorial')">
+<i class="fa-solid fa-plus"></i> Tambah Modul
+</button>
+</div>
+
+<div id="tutorialList">
+<!-- Items render via JS -->
+</div>
+
+</div>
+</div>
+
+<!-- ================= BUKU KAS PAGE ================= -->
+<div id="page-kas" class="page">
+<div class="section">
+
+<div class="section-title">
+Buku Kas
+<button type="button" class="btn-primary" onclick="bukaModal('modalKas')">
+    <i class="fa-solid fa-plus"></i> Transaksi
+</button>
+</div>
+
+<div class="list-card">
+
+<div class="fin-grid">
+
+<div class="fin-card">
+<div class="fin-card-title">Kas Masuk</div>
+<div class="fin-card-value" id="kasMasuk">Rp 0</div>
+</div>
+
+
+
+<div class="fin-card">
+<div class="fin-card-title">Kas Keluar</div>
+<div class="fin-card-value" id="kasKeluar">Rp 0</div>
+</div>
+
+
+
+<div class="fin-card">
+<div class="fin-card-title">Saldo</div>
+<div class="fin-card-value" id="saldoKas">Rp 0</div>
+</div>
+
+</div>
+
+</div>
+
+<div class="kas-filter">
+
+<select id="filterKas" onchange="toggleFilterKas()">
+    <option value="today">Hari Ini</option>
+    <option value="yesterday">Kemarin</option>
+    <option value="7days">7 Hari</option>
+    <option value="thisMonth">Bulan Ini</option>
+    <option value="thisYear">Tahun Ini</option>
+    <option value="custom">Rentang Tanggal</option>
+    <option value="all">Semua</option>
+</select>
+
+</div>
+
+<div id="filterManualKas" style="display:none;margin-top:12px;">
+    <div class="form-row">
+        <div class="form-group">
+            <label>Dari Tanggal</label>
+            <input type="date" id="kasDari">
+        </div>
+
+        <div class="form-group">
+            <label>Sampai Tanggal</label>
+            <input type="date" id="kasSampai">
+        </div>
+    </div>
+
+    <button class="btn-primary"
+        style="width:100%;justify-content:center;"
+        onclick="renderKas()">
+        Terapkan Filter
+    </button>
+</div>
+
+<div id="kasList" class="list-card" style="margin-top:16px;"></div>
+
+</div>
+</div>
+
+
+
+<!-- ================= SETTING PAGE ================= -->
+<div id="page-setting" class="page">
+<div class="section">
+<div class="section-title">Pengaturan Aplikasi</div>
+<div class="list-card">
+<div class="item">
+<div><b>Versi Aplikasi</b><br><small>V1.15 (Dirrice adalah apps yang dikembangkan oleh dirman syah)</small></div>
+</div>
+<div class="item" onclick="exportData()" style="cursor:pointer; color:var(--green);">
+<div><b>Backup All Data (Export)</b><br><small>Unduh seluruh data aplikasi ke file cadangan (.json)</small></div>
+<i class="fa-solid fa-download"></i>
+</div>
+<div class="item" onclick="document.getElementById('importFile').click()" style="cursor:pointer; color:#0284c7;">
+<div><b>Restore Data (Import)</b><br><small>Pulihkan data dari file cadangan .json</small></div>
+<i class="fa-solid fa-upload"></i>
+<input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+</div>
+<div class="item" onclick="resetData()" style="cursor:pointer; color: red;">
+<div><b>Reset Data</b><br><small>Hapus seluruh data master, formula & riwayat</small></div>
+<i class="fa-solid fa-trash"></i>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- ================= BOTTOM NAVIGATION ================= -->
+<div class="bottom">
+<button id="nav-home" class="active" onclick="bukaHalaman('page-home')">
+<i class="fa-solid fa-house"></i>
+Home
+</button>
+
+<button id="nav-master" onclick="bukaHalaman('page-master')">
+<i class="fa-solid fa-seedling"></i>
+Beras
+</button>
+
+<button id="nav-sales" onclick="bukaHalaman('page-sales')">
+<i class="fa-solid fa-cart-shopping"></i>
+Sales
+</button>
+
+<button id="nav-formula" onclick="bukaHalaman('page-formula')">
+<i class="fa-solid fa-flask"></i>
+Formula
+</button>
+
+<button id="nav-setting" onclick="bukaHalaman('page-setting')">
+<i class="fa-solid fa-gear"></i>
+Setting
+</button>
+</div>
+
+
+
+<!-- ================= MODAL TRANSAKSI PENJUALAN (SALES) ================= -->
+<div class="modal" id="modalSales">
+<div class="modal-content">
+<div class="section-title">Input Transaksi Penjualan</div>
+<form id="formSales" onsubmit="simpanSales(event)">
+<div class="form-group">
+<label>Tanggal Transaksi</label>
+<input type="date" id="salesTanggal" required>
+</div>
+
+<div class="form-group">
+<label>Tipe Produk Dijual</label>
+<select id="salesTipe" onchange="toggleSalesSource()">
+<option value="single">Master Beras Mentah</option>
+<option value="formula">Hasil Stok Blending</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Pilih Produk</label>
+<select id="salesBerasId" required onchange="inisialisasiHargaSales()"></select>
+</div>
+
+<div class="form-group">
+
+    <label>Sumber Harga</label>
+
+    <select id="sumberHarga" onchange="gantiSumberHarga()">
+        <option value="pricelist">Harga Pricelist</option>
+        <option value="manual">Input Manual</option>
+    </select>
+
+</div>
+
+<div class="form-group">
+<label>Jumlah Terjual (Kg)</label>
+<input type="number" step="0.1" id="salesJumlahKg" required placeholder="Contoh: 50" oninput="autoHitungSales()">
+</div>
+<div class="form-group">
+<label>Harga Jual per Kg (Rp) - Bebas Diubah untuk Ambil Untung</label>
+<input type="number" id="salesHargaPerKg" required placeholder="14000" oninput="autoHitungSales()">
+</div>
+<div class="form-group">
+<label>Total Harga Penjualan (Rp)</label>
+<input type="number" id="salesTotalHarga" required readonly style="background:#f3f4f6;">
+</div>
+<div style="display: flex; gap: 10px; margin-top: 20px;">
+<button type="button" class="btn-secondary" style="flex:1" onclick="tutupModal('modalSales')">Batal</button>
+<button type="submit" class="btn-primary" style="flex:1; justify-content:center;">Simpan Transaksi</button>
+</div>
+</form>
+</div>
+</div>
+
+<!-- ================= MODAL EDIT SALES ================= -->
+
+<div class="modal" id="modalEditSales">
+
+    <div class="modal-content">
+
+        <div class="section-title">
+            Edit Transaksi Penjualan
+        </div>
+
+        <form id="formEditSales"
+              onsubmit="simpanEditSales(event)">
+
+            <input
+                type="hidden"
+                id="editSalesId">
+
+            <div class="form-group">
+
+                <label>Tanggal Transaksi</label>
+
+                <input
+                    type="date"
+                    id="editSalesTanggal"
+                    required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Jumlah Terjual (Kg)</label>
+
+                <input
+                    type="number"
+                    step="0.1"
+                    id="editSalesJumlahKg"
+                    required
+                    oninput="hitungTotalEditSales()">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Harga Jual per Kg (Rp)</label>
+
+                <input
+                    type="number"
+                    id="editSalesHargaPerKg"
+                    required
+                    oninput="hitungTotalEditSales()">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Total Harga Penjualan (Rp)</label>
+
+                <input
+                    type="number"
+                    id="editSalesTotalHarga"
+                    readonly
+                    style="background:#f3f4f6;">
+
+            </div>
+
+
+            <div
+                style="
+                    display:flex;
+                    gap:10px;
+                    margin-top:20px;
+                "
+            >
+
+                <button
+                    type="button"
+                    class="btn-secondary"
+                    style="flex:1"
+                    onclick="tutupModal('modalEditSales')">
+
+                    Batal
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                    style="
+                        flex:1;
+                        justify-content:center;
+                    "
+                >
+
+                    Simpan Perubahan
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- ================= MODAL RESTOK BERAS ================= -->
+<div class="modal" id="modalRestok">
+
+<div class="modal-content">
+
+<div class="section-title">Restok Bahan Baku</div>
+
+<form onsubmit="simpanRestok(event)">
+
+<input type="hidden" id="restokBerasId">
+
+<div class="form-group">
+<label>Nama Beras</label>
+<input type="text" id="restokNama" readonly style="background:#f3f4f6;">
+</div>
+
+<div class="form-group">
+<label>Jumlah Restok (Kg)</label>
+<input type="number" id="restokKg" required placeholder="Contoh: 100">
+</div>
+
+<div class="form-group">
+<label>Keterangan (Opsional)</label>
+<input type="text" id="restokKet" placeholder="Contoh: Pembelian Supplier A">
+</div>
+
+<div style="display:flex;gap:10px;margin-top:20px;">
+<button type="button" class="btn-secondary" style="flex:1"
+onclick="tutupModal('modalRestok')">
+Batal
+</button>
+
+<button type="submit" class="btn-primary"
+style="flex:1;justify-content:center;">
+Simpan Restok
+</button>
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+<!-- ================= MODAL TAMBAH BERAS ================= -->
+<div class="modal" id="modalBeras">
+<div class="modal-content">
+<div class="section-title">Tambah Master Beras</div>
+<form id="formBeras" onsubmit="simpanBeras(event)">
+<div class="form-group">
+<label>Foto Beras (Opsional)</label>
+<input type="file" id="fotoBeras" accept="image/*">
+</div>
+<div class="form-group">
+<label>Nama / Varietas Beras</label>
+<input type="text" id="namaBeras" required placeholder="Contoh: IR 64 Premium">
+</div>
+<div class="form-group">
+<label>Stok Awal (Kg)</label>
+<input type="number" id="stokBeras" required placeholder="0">
+</div>
+<div class="form-group">
+<label>Harga Modal per Kg (Rp)</label>
+<input type="number" id="hargaBeras" required placeholder="12000">
+</div>
+<div style="display: flex; gap: 10px; margin-top: 20px;">
+<button type="button" class="btn-secondary" style="flex:1" onclick="tutupModal('modalBeras')">Batal</button>
+<button type="submit" class="btn-primary" style="flex:1; justify-content:center;">Simpan</button>
+</div>
+</form>
+</div>
+</div>
+
+<!-- ================= MODAL TAMBAH FORMULA ================= -->
+<div class="modal" id="modalFormula">
+<div class="modal-content">
+<div class="section-title">Buat Formula Blending</div>
+<form id="formFormula" onsubmit="simpanFormula(event)">
+  
+<div class="form-group">
+    <label>Foto Formula (Opsional)</label>
+    <input
+        type="file"
+        id="fotoFormula"
+        accept="image/*">
+</div>
+
+<div class="form-group">
+    <label>Nama Formula / Brand Hasil</label>
+    <input
+        type="text"
+        id="namaFormula"
+        required
+        placeholder="Contoh: Super Ramos Premium">
+</div>
+
+<div id="containerBahanFormula">
+  <!-- Dynamic Ingredient Rows inserted via JS -->
+</div>
+
+<button type="button" class="btn-secondary" style="width:100%; margin-bottom:14px;" onclick="tambahBarisBahan()">
+  <i class="fa-solid fa-plus"></i> Tap untuk Lanjut Tambah Bahan
+</button>
+
+<small style="display:block; margin-bottom:15px; color:var(--muted);">* Total akumulasi persentase seluruh bahan harus tepat 100%.</small>
+
+<div style="display: flex; gap: 10px; margin-top: 20px;">
+<button type="button" class="btn-secondary" style="flex:1" onclick="tutupModal('modalFormula')">Batal</button>
+<button type="submit" class="btn-primary" style="flex:1; justify-content:center;">Simpan Formula</button>
+</div>
+</form>
+</div>
+</div>
+
+
+<!-- ================= MODAL EDIT MASTER BERAS ================= -->
+<div class="modal" id="modalEditBeras">
+    <div class="modal-content">
+
+        <div class="section-title">
+            Edit Master Beras
+        </div>
+
+        <form id="formEditBeras" onsubmit="simpanEditBeras(event)">
+
+            <input type="hidden" id="editBerasId">
+
+            <div class="form-group">
+                <label>Foto Beras (Opsional)</label>
+                <input
+                    type="file"
+                    id="editFotoBeras"
+                    accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label>Nama / Varietas Beras</label>
+                <input
+                    type="text"
+                    id="editNamaBeras"
+                    required
+                    placeholder="Contoh: IR 64 Premium">
+            </div>
+
+            <div class="form-group">
+                <label>Harga Modal per Kg (Rp)</label>
+                <input
+                    type="number"
+                    id="editHargaBeras"
+                    required
+                    placeholder="12000">
+            </div>
+
+            <div style="display:flex;gap:10px;margin-top:20px;">
+
+                <button
+                    type="button"
+                    class="btn-secondary"
+                    style="flex:1"
+                    onclick="tutupModal('modalEditBeras')">
+                    Batal
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                    style="flex:1;justify-content:center;">
+                    Simpan Perubahan
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ================= MODAL TAMBAH PRICELIST ================= -->
+<div class="modal" id="modalPricelist">
+<div class="modal-content">
+<div class="section-title">Tambah Item Pricelist</div>
+
+<form id="formPricelist" onsubmit="simpanPricelist(event)">
+
+    <div class="form-group">
+        <label>Tipe Produk</label>
+
+        <select id="tipePricelist" onchange="loadProdukPricelist()">
+            <option value="formula">Hasil Blending</option>
+            <option value="single">Master Beras</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Pilih Produk</label>
+
+        <select id="pricelistProduk" required onchange="hitungHargaOtomatisPricelist()">
+            <option value="">-- Pilih Produk --</option>
+        </select>
+    </div>
+
+<div class="form-group">
+<label>Kemasan / Berat (Kg)</label>
+<input type="number" step="0.1" id="beratKemasan" required placeholder="Contoh: 5" oninput="hitungHargaOtomatisPricelist()">
+</div>
+<div class="form-group">
+<label>Target Keuntungan Margin (%) - <i>Otomatis Hitung Harga</i></label>
+<input type="number" id="targetMarginPricelist" placeholder="Contoh: 15" oninput="hitungHargaOtomatisPricelist()">
+</div>
+<div class="form-group">
+<label>Harga Jual Total (Rp)</label>
+<input type="number" id="hargaJual" required placeholder="Contoh: 75000">
+</div>
+<div style="display: flex; gap: 10px; margin-top: 20px;">
+<button type="button" class="btn-secondary" style="flex:1" onclick="tutupModal('modalPricelist')">Batal</button>
+<button type="submit" class="btn-primary" style="flex:1; justify-content:center;">Simpan</button>
+</div>
+</form>
+</div>
+</div>
+
+
+<!-- ================= MODAL TAMBAH TUTORIAL ================= -->
+<div class="modal" id="modalTutorial">
+<div class="modal-content">
+<div class="section-title">Tambah Modul Tutorial</div>
+<form id="formTutorial" onsubmit="simpanTutorial(event)">
+<div class="form-group">
+<label>Judul Panduan / Step</label>
+<input type="text" id="judulTutorial" required placeholder="Contoh: Cara Mixing Mesin Blending">
+</div>
+<div class="form-group">
+<label>Tipe Media</label>
+<select id="tipeMedia" onchange="toggleMediaInput()">
+<option value="image">Gambar (PNG / JPG)</option>
+<option value="video">Video (MP4 / WebM)</option>
+</select>
+</div>
+<div class="form-group">
+<label>Upload Media File</label>
+<input type="file" id="mediaTutorial" accept="image/*" required>
+</div>
+<div class="form-group">
+<label>Deskripsi Instruksi Operasional</label>
+<textarea id="descTutorial" rows="3" required placeholder="Jelaskan detail petunjuk langkah kerja di sini..."></textarea>
+</div>
+<div style="display: flex; gap: 10px; margin-top: 20px;">
+<button type="button" class="btn-secondary" style="flex:1" onclick="tutupModal('modalTutorial')">Batal</button>
+<button type="submit" class="btn-primary" style="flex:1; justify-content:center;">Simpan</button>
+</div>
+</form>
+</div>
+</div>
+
+<script>
+// Data State
+let state = {
+  beras: JSON.parse(localStorage.getItem('dirrice_beras')) || [],
+  formula: JSON.parse(localStorage.getItem('dirrice_formula')) || [],
+  pricelist: JSON.parse(localStorage.getItem('dirrice_pricelist')) || [],
+  batch: JSON.parse(localStorage.getItem('dirrice_batch')) || [],
+  sales: JSON.parse(localStorage.getItem('dirrice_sales')) || [],
+  stokBlending: JSON.parse(localStorage.getItem('dirrice_stokBlending')) || {}, 
+  kas: JSON.parse(localStorage.getItem('dirrice_kas')) || [],
+  
+  pengetahuan: JSON.parse(localStorage.getItem('dirrice_pengetahuan')) || [],
+  
+  tutorial: JSON.parse(localStorage.getItem('dirrice_tutorial')) || [
+    {
+      id: 1,
+      judul: 'Pemeriksaan Bahan Baku Beras',
+      tipe: 'image',
+      media: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&auto=format&fit=crop',
+      desc: 'Pastikan kadar air beras di bawah 14% sebelum dicampur. Ambil sampel dari 3 titik karung yang berbeda.'
+    },
+    {
+      id: 2,
+      judul: 'Pengoperasian Mesin Blending',
+      tipe: 'image',
+      media: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600&auto=format&fit=crop',
+      desc: 'Masukkan persentase beras sesuai formula yang tersimpan pada sistem DIRRICE.'
+    }
+  ]
+};
+
+let showAllTransactions = false;
+
+function saveData() {
+  localStorage.setItem('dirrice_beras', JSON.stringify(state.beras));
+  localStorage.setItem('dirrice_formula', JSON.stringify(state.formula));
+  localStorage.setItem('dirrice_pricelist', JSON.stringify(state.pricelist));
+  localStorage.setItem('dirrice_batch', JSON.stringify(state.batch));
+  localStorage.setItem('dirrice_sales', JSON.stringify(state.sales));
+  localStorage.setItem('dirrice_stokBlending', JSON.stringify(state.stokBlending));
+  localStorage.setItem('dirrice_kas', JSON.stringify(state.kas));
+  localStorage.setItem('dirrice_pengetahuan', JSON.stringify(state.pengetahuan));
+  localStorage.setItem('dirrice_tutorial', JSON.stringify(state.tutorial));
+  renderAll();
+  renderKas();
+  renderPengetahuan();
+}
+
+// ================= BACKUP & RESTORE FUNCTIONS =================
+function exportData() {
+
+    const dataObj = {
+        kas: state.kas,
+        beras: state.beras,
+        formula: state.formula,
+        pricelist: state.pricelist,
+        batch: state.batch,
+        sales: state.sales,
+        stokBlending: state.stokBlending,
+        pengetahuan: state.pengetahuan,
+        tutorial: state.tutorial
+    };
+
+    const jsonData = JSON.stringify(dataObj, null, 2);
+
+    // Buat file JSON asli
+    const blob = new Blob(
+        [jsonData],
+        { type: 'application/json' }
+    );
+
+    // Buat URL sementara untuk file
+    const url = URL.createObjectURL(blob);
+
+    const downloadAnchor = document.createElement('a');
+
+    const dateStr = new Date()
+        .toISOString()
+        .split('T')[0];
+
+    downloadAnchor.href = url;
+
+    downloadAnchor.download =
+        `dirrice_backup_${dateStr}.json`;
+
+    document.body.appendChild(downloadAnchor);
+
+    downloadAnchor.click();
+
+    downloadAnchor.remove();
+
+    // Bersihkan URL sementara
+    setTimeout(() => {
+        URL.revokeObjectURL(url);
+    }, 1000);
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const importedData = JSON.parse(e.target.result);
+      if (importedData) {
+        if (confirm("Apakah Anda yakin ingin memulihkan data? Data saat ini akan digantikan dengan data dari file backup.")) {
+          if (importedData.beras) state.beras = importedData.beras;
+if (importedData.formula) state.formula = importedData.formula;
+if (importedData.pricelist) state.pricelist = importedData.pricelist;
+if (importedData.batch) state.batch = importedData.batch;
+if (importedData.sales) state.sales = importedData.sales;
+if (importedData.kas) state.kas = importedData.kas;
+if (importedData.stokBlending) state.stokBlending = importedData.stokBlending;
+if (importedData.pengetahuan) state.pengetahuan = importedData.pengetahuan;
+if (importedData.tutorial) state.tutorial = importedData.tutorial;
+          
+          saveData();
+          alert("Data berhasil dipulihkan (Restore)!");
+        }
+      }
+    } catch (err) {
+      alert("Gagal membaca file backup. Pastikan format file .json valid.");
+    }
+    event.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+function tambahBarisBahan(berasId = '', pct = '') {
+  const container = document.getElementById('containerBahanFormula');
+  const index = container.children.length;
+  const labelText = index === 0 ? 'Bahan Utama' : `Bahan Campuran ${index}`;
+  
+  const div = document.createElement('div');
+  div.className = 'form-row ingredient-row';
+  div.style.marginBottom = '10px';
+
+  let selectOptions = state.beras.map(b => 
+    `<option value="${b.id}" ${b.id == berasId ? 'selected' : ''}>${b.nama}</option>`
+  ).join('');
+
+  if (state.beras.length === 0) {
+    selectOptions = `<option value="">Belum Ada Data Master Beras</option>`;
+  }
+
+  div.innerHTML = `
+    <div class="form-group" style="flex:2; margin-bottom:0;">
+      <label>${labelText}</label>
+      <select class="formula-bahan-select" required>${selectOptions}</select>
+    </div>
+    <div class="form-group" style="flex:1; margin-bottom:0;">
+      <label>Persen (%)</label>
+      <input type="number" class="formula-pct-input" required min="1" max="100" value="${pct}" placeholder="0">
+    </div>
+    ${index > 0 ? `<button type="button" class="btn-danger" style="height:40px;" onclick="this.parentElement.remove()"><i class="fa-solid fa-trash"></i></button>` : ''}
+  `;
+
+  container.appendChild(div);
+}
+
+function resetFormFormula() {
+  const container = document.getElementById('containerBahanFormula');
+  container.innerHTML = '';
+  tambahBarisBahan('', 50);
+  tambahBarisBahan('', 50);
+}
+
+function hitungHppFormula(f) {
+  if (!f || !f.items || !Array.isArray(f.items)) return 0;
+  
+  let totalHpp = 0;
+  f.items.forEach(item => {
+    const b = state.beras.find(x => x.id == item.berasId);
+    const harga = b ? Number(b.harga) : 0;
+    const pct = (Number(item.pct) || 0) / 100;
+    totalHpp += harga * pct;
+  });
+
+  return totalHpp;
+}
+
+function hitungSimulasiHarga() {
+  const hpp = Number(document.getElementById('simulasiHpp').value) || 0;
+  const pct = Number(document.getElementById('simulasiTargetProfit').value) || 0;
+
+  if (hpp <= 0) {
+    document.getElementById('hasilSimulasiHarga').innerHTML = '<i>Masukkan HPP yang valid.</i>';
+    return;
+  }
+
+  const jualMarkup = hpp + (hpp * (pct / 100));
+  const untungMarkup = jualMarkup - hpp;
+
+  const jualMargin = (100 - pct) > 0 ? (hpp / (1 - (pct / 100))) : 0;
+  const untungMargin = jualMargin - hpp;
+
+  document.getElementById('hasilSimulasiHarga').innerHTML = `
+    <b>Hasil Perhitungan untuk HPP Rp ${hpp.toLocaleString('id-ID')} / Kg:</b><br>
+    <b>1. Metode Markup (${pct}% dari Modal):</b><br>
+    • Jual/Kg: <b>Rp ${Math.round(jualMarkup).toLocaleString('id-ID')}</b> (Untung: Rp ${Math.round(untungMarkup).toLocaleString('id-ID')}/Kg)<br>
+    • Kemasan 5 Kg: <b>Rp ${Math.round(jualMarkup * 5).toLocaleString('id-ID')}</b><br>
+    <b>2. Metode Gross Margin (${pct}% dari Omzet Jual):</b><br>
+    • Jual/Kg: <b>Rp ${Math.round(jualMargin).toLocaleString('id-ID')}</b> (Untung: Rp ${Math.round(untungMargin).toLocaleString('id-ID')}/Kg)<br>
+    • Kemasan 5 Kg: <b>Rp ${Math.round(jualMargin * 5).toLocaleString('id-ID')}</b>
+  `;
+}
+
+function togglePricelistSource() {
+  const tipe = document.getElementById('tipePricelist').value;
+  const groupFormula = document.getElementById('groupPricelistFormula');
+  const groupBeras = document.getElementById('groupPricelistBeras');
+
+  if (tipe === 'formula') {
+    groupFormula.style.display = 'block';
+    groupBeras.style.display = 'none';
+  } else {
+    groupFormula.style.display = 'none';
+    groupBeras.style.display = 'block';
+  }
+  hitungHargaOtomatisPricelist();
+}
+
+function hitungHargaOtomatisPricelist() {
+
+    const selected = document.getElementById("pricelistProduk").value;
+
+    if (!selected) return;
+
+    const [tipe, id] = selected.split("_");
+
+    const berat = Number(document.getElementById("beratKemasan").value) || 0;
+    const marginPct = Number(document.getElementById("targetMarginPricelist").value) || 0;
+
+    if (berat <= 0 || marginPct <= 0 || marginPct >= 100) return;
+
+    let hppKg = 0;
+
+    if (tipe === "single") {
+
+        const b = state.beras.find(x => x.id == id);
+        if (!b) return;
+
+        hppKg = Number(b.harga) || 0;
+
+    } else {
+
+        const f = state.formula.find(x => x.id == id);
+        if (!f) return;
+
+        hppKg = hitungHppFormula(f);
+
+    }
+
+    const totalHpp = hppKg * berat;
+    const hargaJualTotal = Math.ceil(totalHpp / (1 - (marginPct / 100)));
+
+    document.getElementById("hargaJual").value = hargaJualTotal;
+
+}
+
+function toggleSalesSource() {
+  const tipe = document.getElementById('salesTipe').value;
+  const select = document.getElementById('salesBerasId');
+
+  if (tipe === 'single') {
+    select.innerHTML = state.beras.map(b => `<option value="single_${b.id}">${b.nama} (Stok: ${b.stok} Kg)</option>`).join('');
+  } else {
+    select.innerHTML = state.formula.map(f => {
+      const stokKg = state.stokBlending[f.id] || 0;
+      return `<option value="formula_${f.id}">${f.nama} (Stok Blending: ${stokKg} Kg)</option>`;
+    }).join('');
+  }
+  inisialisasiHargaSales();
+}
+
+function inisialisasiHargaSales() {
+  const selectedVal = document.getElementById('salesBerasId').value;
+  const hargaInput = document.getElementById('salesHargaPerKg');
+
+  if (!selectedVal) return;
+
+  const [tipe, id] = selectedVal.split('_');
+
+  
+const sumberHarga = document.getElementById("sumberHarga").value;
+
+if (sumberHarga === "pricelist") {
+
+    const item = state.pricelist.find(p => {
+    return p.tipe === tipe && String(p.produkId) === String(id);
+});
+
+    if (item) {
+
+    const beratKemasan = Number(item.berat) || 1;
+    const hargaTotal = Number(item.harga) || 0;
+
+    // Ubah harga kemasan menjadi harga per Kg
+    hargaInput.value = Math.round(hargaTotal / beratKemasan);
+
+    // Hitung ulang total penjualan
+    hitungTotalPenjualan();
+
+} else {
+
+    hargaInput.value = "";
+    hitungTotalPenjualan();
+
+}
+
+}
+else {
+
+    if (tipe === "single") {
+
+        const b = state.beras.find(x => x.id == id);
+
+        if (b) hargaInput.value = b.harga;
+
+    } else {
+
+        const f = state.formula.find(x => x.id == id);
+
+        if (f) {
+            hargaInput.value = Math.round(hitungHppFormula(f));
+        }
+
+    }
+
+}
+
+  autoHitungSales();
+}
+
+function autoHitungSales() {
+  const jumlahKg = Number(document.getElementById('salesJumlahKg').value) || 0;
+  const hargaPerKg = Number(document.getElementById('salesHargaPerKg').value) || 0;
+  
+  document.getElementById('salesTotalHarga').value = jumlahKg * hargaPerKg;
+}
+
+function konfirmasiHapus() {
+  if (confirm("Hapus?")) {
+    if (confirm("Yakin hapus?")) {
+      if (confirm("Yakin terhapus permanen?")) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function bukaHalaman(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.bottom button').forEach(b => b.classList.remove('active'));
+
+  document.getElementById(pageId).classList.add('active');
+
+  const navMap = {
+    'page-home': 'nav-home',
+    'page-master': 'nav-master',
+    'page-sales': 'nav-sales',
+    'page-formula': 'nav-formula',
+    'page-setting': 'nav-setting'
+  };
+
+  if(navMap[pageId]) {
+    document.getElementById(navMap[pageId]).classList.add('active');
+  }
+
+  if (pageId === 'page-omset') {
+    renderOmsetReport();
+  }
+
+  window.scrollTo(0,0);
+}
+
+function bukaModal(modalId) {
+  document.getElementById(modalId).classList.add('active');
+  populateSelects();
+
+  if (modalId === 'modalFormula') {
+    resetFormFormula();
+  } else if (modalId === 'modalSales') {
+    document.getElementById('salesTanggal').value = new Date().toISOString().split('T')[0];
+    toggleSalesSource();
+  } else if (modalId === 'modalPricelist') {
+    togglePricelistSource();
+  }
+}
+
+function tutupModal(modalId) {
+  document.getElementById(modalId).classList.remove('active');
+}
+
+function toggleMediaInput() {
+  const tipe = document.getElementById('tipeMedia').value;
+  const input = document.getElementById('mediaTutorial');
+  input.accept = tipe === 'image' ? 'image/*' : 'video/*';
+}
+
+// ================= OMSET & PROFIT REPORT LOGIC WITH COMPARISON =================
+function toggleFilterOption() {
+  const filterVal = document.getElementById('omsetFilter').value;
+  const customGroup = document.getElementById('groupCustomDate');
+  if (filterVal === 'customDate') {
+    customGroup.style.display = 'block';
+    if(!document.getElementById('omsetCustomDate').value) {
+      document.getElementById('omsetCustomDate').value = new Date().toISOString().split('T')[0];
+    }
+  } else {
+    customGroup.style.display = 'none';
+  }
+  renderOmsetReport();
+}
+
+function toggleShowAllTransactions() {
+  showAllTransactions = !showAllTransactions;
+  renderOmsetReport();
+}
+
+function filterSalesByPeriod(salesList, filterVal, customDateVal, isPrevious = false) {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  return salesList.filter(s => {
+    if (!s.tanggal) return false;
+    const saleDate = new Date(s.tanggal);
+    saleDate.setHours(0,0,0,0);
+
+    if (filterVal === 'today') {
+      const targetDate = new Date(today);
+      if (isPrevious) targetDate.setDate(targetDate.getDate() - 1);
+      return saleDate.getTime() === targetDate.getTime();
+    } else if (filterVal === 'yesterday') {
+      const targetDate = new Date(today);
+      targetDate.setDate(targetDate.getDate() - 1);
+      if (isPrevious) targetDate.setDate(targetDate.getDate() - 1);
+      return saleDate.getTime() === targetDate.getTime();
+    } else if (filterVal === '7days') {
+      const start = new Date(today);
+      start.setDate(start.getDate() - 6);
+      const end = new Date(today);
+      if (isPrevious) {
+        start.setDate(start.getDate() - 7);
+        end.setDate(end.getDate() - 7);
+      }
+      return saleDate >= start && saleDate <= end;
+    } else if (filterVal === 'thisMonth') {
+      const start = new Date(today);
+      start.setDate(start.getDate() - 29);
+      const end = new Date(today);
+      if (isPrevious) {
+        start.setDate(start.getDate() - 30);
+        end.setDate(end.getDate() - 30);
+      }
+      return saleDate >= start && saleDate <= end;
+    } else if (filterVal === 'thisYear') {
+      const currentYear = today.getFullYear();
+      const targetYear = isPrevious ? currentYear - 1 : currentYear;
+      return saleDate.getFullYear() === targetYear;
+    } else if (filterVal === 'customDate') {
+      if (!customDateVal) return true;
+      const cDate = new Date(customDateVal);
+      if (isPrevious) cDate.setDate(cDate.getDate() - 1);
+      cDate.setHours(0,0,0,0);
+      return saleDate.getTime() === cDate.getTime();
+    } else {
+      return !isPrevious; // 'all' has no previous
+    }
+  });
+}
+
+function renderOmsetReport() {
+  const filterVal = document.getElementById('omsetFilter').value;
+  const customDateVal = document.getElementById('omsetCustomDate').value;
+
+  const currentSales = filterSalesByPeriod(state.sales, filterVal, customDateVal, false);
+  const prevSales = filterSalesByPeriod(state.sales, filterVal, customDateVal, true);
+
+  let totalOmset = 0;
+  let totalModal = 0;
+  let totalKg = 0;
+
+  let prevOmset = 0;
+  let prevKg = 0;
+
+  currentSales.forEach(s => {
+    let hppPerKg = Number(s.hppPerKg) || 0;
+    if (hppPerKg === 0) {
+      let matchedFormula = state.formula.find(f => s.berasNama.includes(f.nama));
+      if (matchedFormula) {
+        hppPerKg = hitungHppFormula(matchedFormula);
+      } else {
+        let matchedBeras = state.beras.find(b => s.berasNama.includes(b.nama));
+        if (matchedBeras) {
+          hppPerKg = Number(matchedBeras.harga) || 0;
+        }
+      }
+    }
+    const omsetLine = Number(s.totalHarga) || 0;
+    const kgLine = Number(s.jumlahKg) || 0;
+    totalOmset += omsetLine;
+    totalModal += hppPerKg * kgLine;
+    totalKg += kgLine;
+  });
+
+  prevSales.forEach(s => {
+    prevOmset += Number(s.totalHarga) || 0;
+    prevKg += Number(s.jumlahKg) || 0;
+  });
+
+  const totalUntung = totalOmset - totalModal;
+  const marginPct = totalOmset > 0 ? ((totalUntung / totalOmset) * 100).toFixed(1) : 0;
+
+  document.getElementById('reportOmsetTotal').innerText = 'Rp ' + Math.round(totalOmset).toLocaleString('id-ID');
+  document.getElementById('reportKgTotal').innerText = Number(totalKg).toLocaleString('id-ID') + ' Kg';
+  document.getElementById('reportUntungTotal').innerText = 'Rp ' + Math.round(totalUntung).toLocaleString('id-ID');
+  document.getElementById('reportMargin').innerText = marginPct + '% Margin Profit';
+
+  // Perbandingan teks
+  if (filterVal !== 'all') {
+    document.getElementById('compOmset').innerText = `vs lalu: Rp ${Math.round(prevOmset).toLocaleString('id-ID')}`;
+    document.getElementById('compKg').innerText = `vs lalu: ${Number(prevKg).toLocaleString('id-ID')} Kg`;
+  } else {
+    document.getElementById('compOmset').innerText = `Semua Periode`;
+    document.getElementById('compKg').innerText = `Semua Periode`;
+  }
+
+  // Render Rincian Transaksi (1 Saja Tampil, Sisanya Open to See All)
+  const detailContainer = document.getElementById('omsetDetailList');
+  if (currentSales.length === 0) {
+    detailContainer.innerHTML = '<div style="text-align:center; padding:20px; color:#888;">Tidak ada data transaksi penjualan pada periode ini.</div>';
+  } else {
+    const itemsToDisplay = showAllTransactions ? currentSales : currentSales.slice(0, 1);
+    
+    let html = itemsToDisplay.map(s => {
+      let hppPerKg = Number(s.hppPerKg) || 0;
+      if (hppPerKg === 0) {
+        let matchedFormula = state.formula.find(f => s.berasNama.includes(f.nama));
+        if (matchedFormula) {
+          hppPerKg = hitungHppFormula(matchedFormula);
+        } else {
+          let matchedBeras = state.beras.find(b => s.berasNama.includes(b.nama));
+          if (matchedBeras) {
+            hppPerKg = Number(matchedBeras.harga) || 0;
+          }
+        }
+      }
+      const omsetLine = Number(s.totalHarga) || 0;
+      const modalLine = hppPerKg * (Number(s.jumlahKg) || 0);
+      const untungLine = omsetLine - modalLine;
+
+      return `
+        <div class="item">
+          <div>
+            <b>${s.berasNama}</b><br>
+            Rp ${Number(s.hargaPerKg).toLocaleString('id-ID')}</small><br>
+            <small style="color:var(--muted)">Modal: Rp ${Math.round(modalLine).toLocaleString('id-ID')} | Untung: <b style="color:${untungLine>=0?'#16a34a':'#dc2626'}">Rp ${Math.round(untungLine).toLocaleString('id-ID')}</b></small>
+          </div>
+          <div style="text-align:right;">
+            <span class="badge">Omset: Rp ${Math.round(omsetLine).toLocaleString('id-ID')}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    if (currentSales.length > 1) {
+      html += `
+        <div style="text-align:center; margin-top:12px;">
+          <button class="btn-secondary" style="width:100%; justify-content:center; display:flex;" onclick="toggleShowAllTransactions()">
+            ${showAllTransactions ? 'Sembunyikan Kembali (Tampilkan 1 Saja)' : `Open to See All (${currentSales.length} Transaksi)`}
+          </button>
+        </div>
+      `;
+    }
+
+    detailContainer.innerHTML = html;
+  }
+}
+
+// Render Data Utama
+function renderAll() {
+  const totalKgMentah = state.beras.reduce((acc, curr) => acc + Number(curr.stok), 0);
+  let totalKgBlending = 0;
+  for (let key in state.stokBlending) {
+    totalKgBlending += Number(state.stokBlending[key]) || 0;
+  }
+  const totalFisikGudang = totalKgMentah + totalKgBlending;
+
+  document.getElementById('totalBeras').innerText = state.beras.length;
+  document.getElementById('totalFormula').innerText = state.formula.length;
+  document.getElementById('totalPricelist').innerText = state.pricelist.length;
+  document.getElementById('totalStok').innerText = totalFisikGudang.toLocaleString('id-ID') + ' Kg';
+
+  const actContainer = document.getElementById('aktivitasList');
+  let activities = [];
+
+  state.sales.forEach(s => {
+    activities.push({
+      tanggal: s.tanggal,
+      timestamp: s.id,
+      judul: `Penjualan: ${s.berasNama}`,
+      desc: `${s.jumlahKg} Kg  Rp ${Number(s.hargaPerKg).toLocaleString('id-ID')}/Kg (Total: Rp ${Number(s.totalHarga).toLocaleString('id-ID')})`,
+      type: 'SALES',
+      badgeClass: 'badge'
+    });
+  });
+
+  state.batch.forEach(b => {
+    activities.push({
+      tanggal: b.tanggal,
+      timestamp: b.id,
+      judul: `Produksi Batch: ${b.formulaNama}`,
+      desc: `Target ${b.target} Kg | Op: ${b.operator}`,
+      type: 'PRODUKSI',
+      badgeClass: 'badge badge-warning'
+    });
+  });
+
+  activities.sort((a,b) => b.timestamp - a.timestamp);
+
+  if (activities.length === 0) {
+    actContainer.innerHTML = `
+      <div class="item">
+        <div>
+          <b>Sistem Siap Digunakan</b><br>
+          <small>Mulai dengan menambahkan Master Beras, Formula, atau Transaksi.</small>
+        </div>
+        <span class="badge">INFO</span>
+      </div>`;
+  } else {
+    actContainer.innerHTML = activities.slice(0, 5).map(a => `
+      <div class="item">
+        <div>
+          <b>${a.judul}</b><br>
+          <small>${a.tanggal} | ${a.desc}</small>
+        </div>
+        <span class="${a.badgeClass}">${a.type}</span>
+      </div>
+    `).join('');
+  }
+
+  const berasContainer = document.getElementById('masterBerasList');
+  if(state.beras.length === 0) {
+    berasContainer.innerHTML = '<div style="text-align:center; padding:20px; color:#888;">Belum ada data beras</div>';
+  } else {
+    berasContainer.innerHTML = state.beras.map(b => {
+      const imgHtml = b.foto 
+      ? `<img src="${b.foto}" class="item-img" alt="${b.nama}">` 
+      : `<div class="item-img"><i class="fa-solid fa-bowl-rice"></i></div>`;
+
+      return `
+      <div class="item">
+      <div class="item-info">
+      ${imgHtml}
+      <div>
+      <b>${b.nama}</b><br>
+      <small>Stok Bahan Mentah: ${Number(b.stok).toLocaleString('id-ID')} Kg | Modal: Rp ${Number(b.harga).toLocaleString('id-ID')}/Kg</small>
+      </div>
+      </div>
+      
+<div style="
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-shrink:0;
+">
+
+    <button
+        class="btn-primary"
+        style="
+            padding:8px 9px;
+            font-size:11px;
+            white-space:nowrap;
+        "
+        onclick="restokBeras(${b.id})">
+        <i class="fa-solid fa-box-open"></i> Restok
+    </button>
+
+    <button
+        class="btn-secondary"
+        style="
+            padding:8px 9px;
+            font-size:11px;
+            white-space:nowrap;
+        "
+        onclick="editBeras(${b.id})">
+        <i class="fa-solid fa-pen"></i> Edit
+    </button>
+
+    <button
+        class="btn-danger"
+        style="
+            padding:8px 10px;
+            font-size:11px;
+            white-space:nowrap;
+        "
+        onclick="hapusBeras(${b.id})">
+        <i class="fa-solid fa-trash"></i>
+    </button>
+
+</div>
+      </div>
+      `;
+    }).join('');
+  }
+
+const salesSorted = [...state.sales].sort((a, b) => {
+    return Number(b.jumlahKg) - Number(a.jumlahKg);
+});
+
+  const salesContainer = document.getElementById('salesHistoryList');
+  if(state.sales.length === 0) {
+    salesContainer.innerHTML = '<div style="text-align:center; padding:20px; color:#888;">Belum ada riwayat transaksi penjualan.</div>';
+  } else {
+    salesContainer.innerHTML = salesSorted.map(s => `
+      <div class="item">
+      <div>
+      <b>${s.berasNama}</b><br>
+      <small>
+      
+      <div class="sales-meta">
+    <div>Tgl: ${s.tanggal}</div>
+
+    <div>Jumlah: ${Number(s.jumlahKg).toLocaleString('id-ID')} Kg</div>
+
+    <div class="sales-price">
+        Rp ${Number(s.hargaPerKg).toLocaleString('id-ID')}/Kg
+    </div>
+</div>
+      
+      </small>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+      <div class="sales-total">
+    <small>Total</small>
+    <div>Rp ${Number(s.totalHarga).toLocaleString('id-ID')}</div>
+</div>
+      
+      <div style="display:flex;align-items:center;gap:6px;">
+
+    <button
+        class="btn-secondary"
+        style="
+            padding:8px 9px;
+            font-size:11px;
+            white-space:nowrap;
+        "
+        onclick="editSales(${s.id})">
+        <i class="fa-solid fa-pen"></i> Edit
+    </button>
+
+    <button
+        class="btn-danger"
+        style="
+            padding:8px 10px;
+            font-size:11px;
+        "
+        onclick="hapusSales(${s.id})">
+        <i class="fa-solid fa-trash"></i>
+    </button>
+
+</div>
+      
+      </div>
+      </div>
+    `).join('');
+  }
+
+let totalNilaiGudang = 0;
+
+// Nilai bahan mentah
+state.beras.forEach(b => {
+
+    totalNilaiGudang +=
+        (Number(b.stok) || 0) *
+        (Number(b.harga) || 0);
+
+});
+
+// Nilai stok hasil blending
+state.formula.forEach(f => {
+
+    const stok = Number(state.stokBlending[f.id]) || 0;
+
+    totalNilaiGudang +=
+        stok * hitungHppFormula(f);
+
+});
+
+document.getElementById("totalNilaiGudang").innerText =
+    "Rp " + totalNilaiGudang.toLocaleString("id-ID");
+
+  document.getElementById('totalRingkasanGudang').innerText = totalFisikGudang.toLocaleString('id-ID') + ' Kg';
+
+  const gudangMentahContainer = document.getElementById('stokGudangMentahList');
+  if(state.beras.length === 0) {
+    gudangMentahContainer.innerHTML = '<div style="text-align:center; padding:15px; color:#888;">Belum ada stok bahan mentah.</div>';
+  } else {
+    gudangMentahContainer.innerHTML = state.beras.map(b => {
+      const imgHtml = b.foto 
+      ? `<img src="${b.foto}" class="item-img" alt="${b.nama}">` 
+      : `<div class="item-img"><i class="fa-solid fa-bowl-rice"></i></div>`;
+
+      return `
+      <div class="item">
+      <div class="item-info">
+      ${imgHtml}
+      <div>
+      <b>${b.nama} (Bahan Baku)</b><br>
+      <small>Siap di-blending</small>
+      </div>
+      </div>
+      <span class="badge ${
+    Number(b.stok) <= 0
+        ? 'badge-danger'
+        : Number(b.stok) < 100
+            ? 'badge-warning'
+            : ''
+}">
+    ${
+        Number(b.stok) <= 0
+            ? 'Habis'
+            : Number(b.stok).toLocaleString('id-ID') + ' Kg'
+    }
+</span>
+      </div>
+      `;
+    }).join('');
+  }
+
+  const gudangBlendingContainer = document.getElementById('stokGudangBlendingList');
+  if(state.formula.length === 0) {
+    gudangBlendingContainer.innerHTML = '<div style="text-align:center; padding:15px; color:#888;">Belum ada formula produk blending.</div>';
+  } else {
+    gudangBlendingContainer.innerHTML = state.formula.map(f => {
+      const stokKg = state.stokBlending[f.id] || 0;
+      return `
+      <div class="item">
+      <div class="item-info">
+      ${f.foto
+    ? `<img src="${f.foto}" class="item-img" alt="${f.nama}">`
+    : `<div class="item-img" style="background:#e0f2fe;color:#0284c7;">
+         <i class="fa-solid fa-flask"></i>
+       </div>`
+}
+      <div>
+      <b>${f.nama} (Hasil Blending)</b><br>
+      <small>Siap Dijual ke Customer</small>
+      </div>
+      </div>
+      <span class="badge badge-info">${stokKg.toLocaleString('id-ID')} Kg</span>
+      </div>
+      `;
+    }).join('');
+  }
+
+  const formulaContainer = document.getElementById('formulaList');
+  if(state.formula.length === 0) {
+    formulaContainer.innerHTML = '<div style="text-align:center; padding:20px; color:#888;">Belum ada formula</div>';
+  } else {
+    formulaContainer.innerHTML = state.formula.map(f => {
+      const komposisiText = f.items ? f.items.map(item => {
+        const b = state.beras.find(x => x.id == item.berasId);
+        return `${b ? b.nama : 'N/A'} (${item.pct}%)`;
+      }).join(', ') : '';
+
+      return `
+      <div class="item">
+      <div>
+      <b>${f.nama}</b><br>
+      <small>Komposisi (${f.items.length} Bahan): ${komposisiText}</small>
+      </div>
+      
+   <div style="display:flex;gap:6px;align-items:center;">
+
+    <button
+        class="btn-secondary"
+        style="padding:8px 10px;font-size:12px;"
+        onclick="editFormula(${f.id})">
+        <i class="fa-solid fa-pen"></i>
+    </button>
+
+    <button
+        class="btn-danger"
+        onclick="hapusFormula(${f.id})">
+        <i class="fa-solid fa-trash"></i>
+    </button>
+
+</div>   
+      
+      </div>
+      `;
+    }).join('');
+  }
+
+  const pricelistContainer = document.getElementById('pricelistContainer');
+  if(state.pricelist.length === 0) {
+    pricelistContainer.innerHTML = '<div style="text-align:center; padding:20px; color:#888;">Belum ada item pricelist</div>';
+  } else {
+    let dataPricelist = state.pricelist;
+
+if (window.keywordPricelist) {
+
+    dataPricelist = dataPricelist.filter(p =>
+        (p.nama || "").toLowerCase().includes(window.keywordPricelist)
+    );
+
+}
+
+pricelistContainer.innerHTML = dataPricelist.map(p => {
+      let tipeLabel = '';
+      if (p.tipe === 'single') {
+        const b = state.beras.find(x => x.id == p.berasId);
+        tipeLabel = b ? `Beras Mentah: ${b.nama}` : 'Beras Biasa';
+      } else {
+        const f = state.formula.find(x => x.id == p.formulaId);
+        tipeLabel = f ? `Formula: ${f.nama}` : 'Beras Blending';
+      }
+
+      const imgHtml = p.foto 
+        ? `<img src="${p.foto}" class="item-img" alt="${p.nama}">` 
+        : `<div class="item-img"><i class="fa-solid fa-tags"></i></div>`;
+
+      return `
+      <div class="item">
+        <div class="item-info">
+          ${imgHtml}
+          <div>
+            <b>${p.nama}</b><br>
+            <small>Kemasan: ${p.berat} Kg | ${tipeLabel}</small>
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="badge">Rp ${Number(p.harga).toLocaleString('id-ID')}</span>
+          <button class="btn-danger" onclick="hapusPricelist(${p.id})"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </div>
+      `;
+    }).join('');
+  }
+
+  const batchContainer = document.getElementById('batchHistoryList');
+  if(state.batch.length === 0) {
+    batchContainer.innerHTML = '<div style="text-align:center; padding:20px; color:#888;">Belum ada riwayat produksi batch.</div>';
+  } else {
+    batchContainer.innerHTML = state.batch.map(bt => {
+      const detailBahan = bt.items ? bt.items.map(i => `${i.nama} (${i.kg}Kg)`).join(', ') : 'Tidak ada rincian';
+      return `
+      <div class="item" style="flex-direction:column; align-items:flex-start; gap:6px;">
+      <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+      <b>${bt.kodeBatch} - ${bt.formulaNama}</b>
+      <span class="badge">${bt.target} Kg</span>
+      </div>
+      <small style="color:var(--muted);">Tgl: ${bt.tanggal} | Operator: ${bt.operator}</small>
+      <small style="color:#16a34a; font-weight:600;">Komposisi Campuran: ${detailBahan}</small>
+      </div>
+      `;
+    }).join('');
+  }
+
+  const hppContainer = document.getElementById('hppList');
+  const profitContainer = document.getElementById('profitList');
+
+  if(state.formula.length === 0) {
+    hppContainer.innerHTML = '<div style="text-align:center; padding:20px; color:#888;">Belum ada formula untuk dihitung HPP</div>';
+  } else {
+    hppContainer.innerHTML = '<div class="section-title" style="font-size:15px; margin-bottom:10px;">HPP per Kg Sesuai Formula</div>' + state.formula.map(f => {
+      const hpp = hitungHppFormula(f);
+      return `
+      <div class="item">
+      <div>
+      <b>${f.nama}</b><br>
+      <small>Modal Campuran / Kg</small>
+      </div>
+      <span class="badge badge-warning">Rp ${Math.round(hpp).toLocaleString('id-ID')}/Kg</span>
+      </div>
+      `;
+    }).join('');
+  }
+
+  if(state.pricelist.length === 0) {
+    profitContainer.innerHTML = '<div style="text-align:center; padding:20px; color:#888;">Belum ada item pricelist</div>';
+  } else {
+    profitContainer.innerHTML = state.pricelist.map(p => {
+      let hppKg = 0;
+      if (p.tipe === 'single') {
+        const b = state.beras.find(x => x.id == p.berasId);
+        hppKg = b ? Number(b.harga) : 0;
+      } else {
+        const f = state.formula.find(x => x.id == p.formulaId);
+        hppKg = f ? hitungHppFormula(f) : 0;
+      }
+
+      const totalHpp = hppKg * Number(p.berat);
+      const profit = Number(p.harga) - totalHpp;
+      const margin = p.harga > 0 ? ((profit / p.harga) * 100).toFixed(1) : 0;
+
+      return `
+      <div class="item">
+      <div>
+      <b>${p.nama} (${p.berat} Kg)</b><br>
+      <small>HPP Total: Rp ${Math.round(totalHpp).toLocaleString('id-ID')} | Harga: Rp ${Number(p.harga).toLocaleString('id-ID')}</small>
+      </div>
+      <div style="text-align:right;">
+      <span class="badge ${profit >= 0 ? '' : 'badge-warning'}">Profit: Rp ${Math.round(profit).toLocaleString('id-ID')}</span><br>
+      <small style="font-weight:700; color:var(--muted);">${margin}% Margin</small>
+      </div>
+      </div>
+      `;
+    }).join('');
+  }
+
+  const tutorialContainer = document.getElementById('tutorialList');
+  if(state.tutorial.length === 0) {
+    tutorialContainer.innerHTML = '<div class="list-card" style="text-align:center; padding:20px; color:#888;">Belum ada materi tutorial</div>';
+  } else {
+    tutorialContainer.innerHTML = state.tutorial.map((t, idx) => {
+      const mediaHtml = t.tipe === 'video' 
+      ? `<video src="${t.media}" class="step-media" controls></video>` 
+      : `<img src="${t.media}" class="step-media" alt="${t.judul}">`;
+
+      return `
+      <div class="step-card">
+      <div class="step-header">
+      <div class="step-num">${idx + 1}</div>
+      <div class="step-title">${t.judul}</div>
+      <button class="btn-danger" style="margin-left:auto;" onclick="hapusTutorial(${t.id})"><i class="fa-solid fa-trash"></i></button>
+      </div>
+      ${mediaHtml}
+      <div class="step-desc">${t.desc}</div>
+      </div>
+      `;
+    }).join('');
+  }
+
+  const prodSelect = document.getElementById('prodFormulaSelect');
+  if(prodSelect) {
+    prodSelect.innerHTML = state.formula.map(f => `<option value="${f.id}">${f.nama}</option>`).join('');
+  }
+
+  hitungSimulasiHarga();
+  renderOmsetReport();
+}
+
+function populateSelects() {
+  const formulaSelect = document.getElementById('formulaPricelist');
+  if(formulaSelect) {
+    formulaSelect.innerHTML = state.formula.map(f => `<option value="${f.id}">${f.nama}</option>`).join('');
+  }
+
+  const berasSelect = document.getElementById('berasPricelist');
+  if(berasSelect) {
+    berasSelect.innerHTML = state.beras.map(b => `<option value="${b.id}">${b.nama}</option>`).join('');
+  }
+}
+
+function simpanSales(e) {
+  e.preventDefault();
+  const tanggal = document.getElementById('salesTanggal').value;
+  const selectedVal = document.getElementById('salesBerasId').value;
+  const jumlahKg = Number(document.getElementById('salesJumlahKg').value);
+  const hargaPerKg = Number(document.getElementById('salesHargaPerKg').value);
+  const totalHarga = Number(document.getElementById('salesTotalHarga').value);
+
+  if (!selectedVal) return alert('Pilih produk beras!');
+
+  const [tipe, id] = selectedVal.split('_');
+  let namaProduk = '';
+  let hppPerKg = 0;
+
+  if (tipe === 'single') {
+    const b = state.beras.find(x => x.id == id);
+    if (!b) return alert('Beras tidak ditemukan!');
+
+    if (Number(b.stok) < jumlahKg) {
+      return alert(`Stok ${b.nama} tidak mencukupi! Stok saat ini: ${b.stok} Kg`);
+    }
+
+    b.stok = Number(b.stok) - jumlahKg;
+    namaProduk = b.nama;
+    hppPerKg = Number(b.harga) || 0;
+
+  } else if (tipe === 'formula') {
+    const f = state.formula.find(x => x.id == id);
+    if (!f) return alert('Formula tidak ditemukan!');
+
+    const stokAda = state.stokBlending[f.id] || 0;
+    if (stokAda < jumlahKg) {
+      return alert(`Stok hasil blending ${f.nama} tidak mencukupi! Stok saat ini: ${stokAda} Kg`);
+    }
+
+    state.stokBlending[f.id] = stokAda - jumlahKg;
+    namaProduk = `Hasil Blending: ${f.nama}`;
+    hppPerKg = hitungHppFormula(f);
+  }
+
+  const salesId = Date.now();
+const kasId = salesId + 1;
+
+state.sales.unshift({
+    id: salesId,
+    kasId: kasId,
+    tanggal,
+    berasNama: namaProduk,
+    jumlahKg,
+    hargaPerKg,
+    hppPerKg,
+    totalHarga
+});
+
+state.kas.unshift({
+    id: kasId,
+    jenis: 'masuk',
+    tanggal,
+    kategori: 'Penjualan',
+    keterangan: namaProduk,
+    nominal: totalHarga
+});
+
+  saveData();
+  renderKas();
+  tutupModal('modalSales');
+  document.getElementById('formSales').reset();
+  alert('Transaksi penjualan berhasil disimpan & stok fisik gudang telah berkurang!');
+}
+
+function hapusSales(id) {
+  if (konfirmasiHapus()) {
+
+    const sales = state.sales.find(s => s.id === id);
+
+    if (sales) {
+      state.kas = state.kas.filter(k =>
+        !(k.keterangan === sales.berasNama &&
+          Number(k.nominal) === Number(sales.totalHarga) &&
+          k.kategori === "Penjualan")
+      );
+    }
+    state.sales = state.sales.filter(s => s.id !== id);
+    saveData();
+  }
+}
+
+function simpanBeras(e) {
+  e.preventDefault();
+  const nama = document.getElementById('namaBeras').value;
+  const stok = document.getElementById('stokBeras').value;
+  const harga = document.getElementById('hargaBeras').value;
+  const fileInput = document.getElementById('fotoBeras');
+
+  const file = fileInput.files[0];
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onloadend = function () {
+      const fotoBase64 = reader.result;
+      state.beras.push({ id: Date.now(), nama, stok, harga, foto: fotoBase64 });
+      saveData();
+      tutupModal('modalBeras');
+      document.getElementById('formBeras').reset();
+    };
+    reader.readAsDataURL(file);
+  } else {
+    state.beras.push({ id: Date.now(), nama, stok, harga, foto: null });
+    saveData();
+    tutupModal('modalBeras');
+    document.getElementById('formBeras').reset();
+  }
+}
+
+function editBeras(id) {
+
+    const b = state.beras.find(x => x.id == id);
+
+    if (!b) {
+        alert("Data beras tidak ditemukan!");
+        return;
+    }
+
+    document.getElementById("editBerasId").value = b.id;
+    document.getElementById("editNamaBeras").value = b.nama;
+    document.getElementById("editHargaBeras").value = b.harga;
+
+    // Kosongkan input foto.
+    // Jika tidak memilih foto baru, foto lama akan tetap digunakan.
+    document.getElementById("editFotoBeras").value = "";
+
+    bukaModal("modalEditBeras");
+}
+
+function hapusBeras(id) {
+  if(konfirmasiHapus()) {
+    state.beras = state.beras.filter(b => b.id !== id);
+    saveData();
+  }
+}
+
+function simpanFormula(e) {
+  e.preventDefault();
+  const nama = document.getElementById('namaFormula').value;
+  const file = document.getElementById('fotoFormula').files[0];
+  const rows = document.querySelectorAll('.ingredient-row');
+
+  if (rows.length === 0) return alert('Tambahkan minimal 1 jenis bahan baku!');
+
+  let totalPct = 0;
+  let items = [];
+
+  for (let row of rows) {
+    const berasId = row.querySelector('.formula-bahan-select').value;
+    const pct = Number(row.querySelector('.formula-pct-input').value) || 0;
+
+    if (!berasId) return alert('Silakan pilih jenis beras untuk seluruh baris bahan!');
+
+    totalPct += pct;
+    items.push({ berasId, pct });
+  }
+
+  if (totalPct !== 100) {
+    return alert(`Total akumulasi persentase harus tepat 100%! Persentase saat ini: ${totalPct}%`);
+  }
+
+  function simpan(foto=null){
+    state.formula.push({
+      id: Date.now(),
+      nama,
+      foto,
+      items
+    });
+
+    saveData();
+    tutupModal('modalFormula');
+    document.getElementById('formFormula').reset();
+  }
+
+  if(file){
+    const reader=new FileReader();
+    reader.onload=e=>simpan(e.target.result);
+    reader.readAsDataURL(file);
+  }else{
+    simpan(null);
+  }
+}
+
+function hapusFormula(id) {
+  if(konfirmasiHapus()) {
+    state.formula = state.formula.filter(f => f.id !== id);
+    saveData();
+  }
+}
+
+function simpanPricelist(e) {
+    e.preventDefault();
+
+    const selected = document.getElementById("pricelistProduk").value;
+
+    if (!selected) {
+        alert("Pilih produk terlebih dahulu!");
+        return;
+    }
+
+    const [tipe, id] = selected.split("_");
+
+    const berat = Number(document.getElementById("beratKemasan").value);
+    const harga = Number(document.getElementById("hargaJual").value);
+
+    let nama = "";
+    let foto = null;
+    let hppKg = 0;
+
+    if (tipe === "single") {
+
+        const beras = state.beras.find(x => x.id == id);
+
+        if (!beras) {
+            alert("Master beras tidak ditemukan!");
+            return;
+        }
+
+        nama = beras.nama;
+        foto = beras.foto || null;
+        hppKg = Number(beras.harga) || 0;
+
+    } else {
+
+        const formula = state.formula.find(x => x.id == id);
+
+        if (!formula) {
+            alert("Formula tidak ditemukan!");
+            return;
+        }
+
+        nama = formula.nama;
+        foto = formula.foto || null;
+        hppKg = hitungHppFormula(formula);
+
+    }
+
+    state.pricelist.push({
+    id: Date.now(),
+
+    nama,
+    tipe,
+
+    produkId: id,
+
+    berasId: tipe === "single" ? id : null,
+
+    formulaId: tipe === "formula" ? id : null,
+
+    berat: Number(berat),
+
+    harga: Number(harga),
+
+    hppKg: Number(hppKg) || 0,
+
+    foto
+});
+
+    saveData();
+    renderPricelist();
+
+    tutupModal("modalPricelist");
+    document.getElementById("formPricelist").reset();
+
+    alert("Pricelist berhasil disimpan!");
+}
+
+function hapusPricelist(id) {
+
+    if (konfirmasiHapus()) {
+
+        state.pricelist = state.pricelist.filter(p => p.id !== id);
+
+        saveData();
+        renderPricelist();
+
+    }
+
+}
+
+function simpanTutorial(e) {
+  e.preventDefault();
+  const judul = document.getElementById('judulTutorial').value;
+  const tipe = document.getElementById('tipeMedia').value;
+  const desc = document.getElementById('descTutorial').value;
+  const fileInput = document.getElementById('mediaTutorial');
+  const file = fileInput.files[0];
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onloadend = function () {
+      const mediaBase64 = reader.result;
+      state.tutorial.push({ id: Date.now(), judul, tipe, desc, media: mediaBase64 });
+      saveData();
+      tutupModal('modalTutorial');
+      document.getElementById('formTutorial').reset();
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function hapusTutorial(id) {
+  if(konfirmasiHapus()) {
+    state.tutorial = state.tutorial.filter(t => t.id !== id);
+    saveData();
+  }
+}
+
+function hitungProduksi() {
+  const formulaId = document.getElementById('prodFormulaSelect').value;
+  const target = Number(document.getElementById('targetProduksi').value);
+
+  const f = state.formula.find(x => x.id == formulaId);
+  if(!f) return alert('Pilih formula terlebih dahulu!');
+
+  const detail = document.getElementById('detailKebutuhan');
+  let detailHtml = '';
+
+  f.items.forEach(item => {
+    const b = state.beras.find(x => x.id == item.berasId);
+    const kgNeeded = target * (item.pct / 100);
+    detailHtml += `
+      <div class="item">
+        <div><b>${b ? b.nama : 'Bahan Baku'} (${item.pct}%)</b></div>
+        <span class="badge">${kgNeeded.toLocaleString('id-ID')} Kg</span>
+      </div>
+    `;
+  });
+
+  detailHtml += `<div style="margin-top:14px; font-weight:700; text-align:right; font-size:14px;">Total Target Blending: ${target.toLocaleString('id-ID')} Kg</div>`;
+  detail.innerHTML = detailHtml;
+
+  document.getElementById('hasilKebutuhan').style.display = 'block';
+}
+
+function eksekusiProduksi() {
+  const formulaId = document.getElementById('prodFormulaSelect').value;
+  const target = Number(document.getElementById('targetProduksi').value);
+  const operator = document.getElementById('operatorProduksi').value || 'Operator';
+
+  const f = state.formula.find(x => x.id == formulaId);
+  if(!f) return alert('Formula tidak ditemukan!');
+
+  let itemsBatch = [];
+  let stokCukup = true;
+
+  for (let item of f.items) {
+    const b = state.beras.find(x => x.id == item.berasId);
+    if (!b) return alert('Salah satu bahan baku formula tidak ditemukan di Master Beras!');
+
+    const kgNeeded = target * (item.pct / 100);
+    if (Number(b.stok) < kgNeeded) {
+      stokCukup = false;
+      alert(`Stok bahan baku ${b.nama} tidak mencukupi! Kebutuhan: ${kgNeeded}Kg, Stok mentah: ${b.stok}Kg`);
+      break;
+    }
+
+    itemsBatch.push({ berasObj: b, nama: b.nama, kg: kgNeeded, pct: item.pct });
+  }
+
+  if (!stokCukup) return;
+
+  if(!confirm(`Lakukan blending ${target} Kg? Stok bahan mentah master akan dipindah menjadi Stok Hasil Blending di gudang.`)) return;
+
+  itemsBatch.forEach(i => {
+    i.berasObj.stok = Number(i.berasObj.stok) - i.kg;
+  });
+
+  state.stokBlending[f.id] = (state.stokBlending[f.id] || 0) + target;
+
+  const now = new Date();
+  const tanggalFormat = now.toLocaleDateString('id-ID') + ' ' + now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+  const batchBaru = {
+    id: Date.now(),
+    kodeBatch: 'BATCH-' + Math.floor(1000 + Math.random() * 9000),
+    formulaNama: f.nama,
+    target: target,
+    operator: operator,
+    tanggal: tanggalFormat,
+    items: itemsBatch.map(i => ({ nama: i.nama, kg: i.kg, pct: i.pct }))
+  };
+
+  state.batch.unshift(batchBaru);
+  saveData();
+
+  alert(`Produksi Batch ${batchBaru.kodeBatch} berhasil! Bahan baku dialokasikan ke Stok Hasil Blending Gudang.`);
+  bukaHalaman('page-gudang');
+}
+
+function resetData() {
+
+    if (!confirm("Reset semua data?")) return;
+    if (!confirm("Yakin ingin menghapus seluruh data?")) return;
+    if (!confirm("Data tidak bisa dikembalikan. Lanjutkan?")) return;
+
+    // Hapus seluruh LocalStorage
+    localStorage.clear();
+
+// Reset semua state
+state.beras = [];
+state.formula = [];
+state.pricelist = [];
+state.batch = [];
+state.sales = [];
+state.stokBlending = {};
+state.kas = [];
+state.pengetahuan = [];
+
+state.tutorial = [
+    {
+        id: 1,
+        judul: 'Pemeriksaan Bahan Baku Beras',
+        tipe: 'image',
+        media: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&auto=format&fit=crop',
+        desc: 'Pastikan kadar air beras di bawah 14% sebelum dicampur. Ambil sampel dari 3 titik karung yang berbeda.'
+    },
+    {
+        id: 2,
+        judul: 'Pengoperasian Mesin Blending',
+        tipe: 'image',
+        media: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600&auto=format&fit=crop',
+        desc: 'Masukkan persentase beras sesuai formula yang tersimpan pada sistem DIRRICE.'
+    }
+];
+
+    // Simpan ulang state kosong
+    saveData();
+
+    // Render ulang halaman
+    renderAll();
+    renderKas();
+    renderPengetahuan();
+
+    alert("Data berhasil di-reset sepenuhnya.");
+
+}
+
+// Initial Run
+renderAll();
+renderKas();
+renderPengetahuan();
+
+function restokBeras(id){
+    const b = state.beras.find(x => x.id == id);
+    if(!b) return;
+
+    document.getElementById("restokBerasId").value = b.id;
+    document.getElementById("restokNama").value = b.nama;
+    document.getElementById("restokKg").value = "";
+    document.getElementById("restokKet").value = "";
+
+    bukaModal("modalRestok");
+}
+
+function simpanRestok(event){
+    event.preventDefault();
+
+    const id = Number(document.getElementById("restokBerasId").value);
+    const kg = Number(document.getElementById("restokKg").value);
+
+    if(kg <= 0){
+        alert("Jumlah restok harus lebih dari 0 Kg.");
+        return;
+    }
+
+    const beras = state.beras.find(b => b.id == id);
+
+    if(!beras){
+        alert("Data beras tidak ditemukan.");
+        return;
+    }
+
+    beras.stok = Number(beras.stok) + kg;
+
+    saveData();
+    tutupModal("modalRestok");
+    alert("Restok berhasil disimpan.");
+}
+
+let salesRankingOpen = false;
+
+function toggleSalesRanking(){
+    salesRankingOpen = !salesRankingOpen;
+
+    document.getElementById("salesRankingList").style.display =
+        salesRankingOpen ? "block" : "none";
+
+    document.getElementById("salesRankingArrow").innerHTML =
+        salesRankingOpen ? "▲" : "▼";
+
+    if(salesRankingOpen){
+        renderSalesRanking();
+    }
+}
+
+function renderSalesRanking(){
+    const box = document.getElementById("salesRankingList");
+
+    if(state.sales.length===0){
+        box.innerHTML="<small>Belum ada data penjualan.</small>";
+        return;
+    }
+
+    const rank={};
+
+    state.sales.forEach(s=>{
+        const nama = s.berasNama;
+
+        if(!rank[nama]){
+            rank[nama]={
+                nama:nama,
+                kg:0,
+                transaksi:0
+            };
+        }
+
+        rank[nama].kg += Number(s.jumlahKg)||0;
+        rank[nama].transaksi++;
+    });
+
+    const data = Object.values(rank)
+        .sort((a,b)=>b.kg-a.kg);
+
+    let html="";
+
+    data.slice(0,100).forEach((p,i)=>{
+        html+=`
+        <div class="item">
+            <div>
+                <b>#${i+1} ${p.nama}</b><br>
+                <small>
+                ${p.transaksi} Transaksi • ${p.kg.toLocaleString('id-ID')} Kg
+                </small>
+            </div>
+            <span class="badge">
+                #${i+1}
+            </span>
+        </div>
+        `;
+    });
+
+    box.innerHTML=html;
+}
+
+function bukaTips(){
+const tips=[
+"📢 Bisnis tanpa pembukuan akan sulit berkembang.",
+"📢 Jangan percaya penuh pada karyawan tetap kontrol.",
+"📢 Bisnis tanpa data hanya mengandalkan tebakan.",
+"📢 Bisnis tanpa sistem akan mudah ditipu.",
+"📢 Lakukan stock opname minimal 1× setiap bulan.",
+"📢 Catat setiap pemasukan dan pengeluaran.",
+"📢 Keputusan terbaik lahir dari data, bukan perasaan.",
+"📢 Gudang yang rapi mempercepat pekerjaan.",
+"📢 Pantau usaha secara berkala.",
+"📢 Timbang stok fisik secara berkala.",
+"📢 Jangan biarkan stok sistem berbeda dengan stok gudang.",
+"📢 Profit berasal dari penjualan dan pengendalian biaya."
+];
+
+const pesan=tips[Math.floor(Math.random()*tips.length)];
+alert(pesan);
+document.getElementById("bellBadge").style.display="none";
+}
+
+function renderKas(){
+
+    let masuk = 0;
+    let keluar = 0;
+
+    state.kas.forEach(item=>{
+
+        if(item.jenis === "masuk"){
+            masuk += Number(item.nominal);
+        }else{
+            keluar += Number(item.nominal);
+        }
+
+    });
+
+    document.getElementById("kasMasuk").textContent =
+        "Rp " + masuk.toLocaleString("id-ID");
+
+    document.getElementById("kasKeluar").textContent =
+        "Rp " + keluar.toLocaleString("id-ID");
+
+    document.getElementById("saldoKas").textContent =
+        "Rp " + (masuk-keluar).toLocaleString("id-ID");
+
+const kasList = document.getElementById("kasList");
+
+kasList.innerHTML = "";
+
+const filter = document.getElementById("filterKas").value;
+
+let dataKas = [...state.kas];
+
+const today = new Date();
+today.setHours(0,0,0,0);
+
+if(filter === "today"){
+
+    dataKas = dataKas.filter(item=>{
+        const tgl = new Date(item.tanggal);
+        tgl.setHours(0,0,0,0);
+        return tgl.getTime() === today.getTime();
+    });
+
+}
+
+else if(filter === "yesterday"){
+
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate()-1);
+
+    dataKas = dataKas.filter(item=>{
+        const tgl = new Date(item.tanggal);
+        tgl.setHours(0,0,0,0);
+        return tgl.getTime() === yesterday.getTime();
+    });
+
+}
+
+dataKas.forEach(item=>{
+
+    kasList.innerHTML += `
+    <div class="kas-item">
+
+        <div class="kas-icon ${item.jenis}">
+            <i class="fa-solid ${item.jenis=="masuk" ? "fa-arrow-down" : "fa-arrow-up"}"></i>
+        </div>
+
+        <div class="kas-info">
+            <div class="kas-title">${item.keterangan}</div>
+            <div class="kas-meta">
+                ${item.tanggal} • ${item.kategori}
+            </div>
+        </div>
+
+        <div class="kas-right">
+            <div class="kas-nominal ${item.jenis}">
+                ${item.jenis=="masuk" ? "+" : "-"} Rp ${Number(item.nominal).toLocaleString("id-ID")}
+            </div>
+        </div>
+
+    </div>
+    `;
+
+});
+}
+
+function loadProdukPricelist(){
+
+    const tipe = document.getElementById("tipePricelist").value;
+    const select = document.getElementById("pricelistProduk");
+
+    select.innerHTML = '<option value="">-- Pilih Produk --</option>';
+
+    if(tipe === "single"){
+
+        state.beras.forEach(item=>{
+
+            select.innerHTML += `
+                <option value="single_${item.id}">
+                    ${item.nama}
+                </option>
+            `;
+
+        });
+
+    }else{
+
+        state.formula.forEach(item=>{
+
+            select.innerHTML += `
+                <option value="formula_${item.id}">
+                    ${item.nama}
+                </option>
+            `;
+
+        });
+
+    }
+
+}
+
+function simpanKas(e) {
+    e.preventDefault();
+
+    const jenis = document.getElementById("kasJenis").value;
+    const tanggal = document.getElementById("kasTanggal").value;
+    const nominal = Number(document.getElementById("kasNominal").value);
+    const kategori = document.getElementById("kasKategori").value;
+    const keterangan = document.getElementById("kasKeterangan").value;
+
+    if (!nominal || nominal <= 0) {
+        alert("Nominal tidak valid!");
+        return;
+    }
+
+    state.kas.unshift({
+        id: Date.now(),
+        jenis,
+        tanggal,
+        kategori,
+        keterangan,
+        nominal
+    });
+
+    saveData();
+    renderKas();
+
+    document.getElementById("formKas").reset();
+    tutupModal("modalKas");
+
+    alert("Transaksi kas berhasil disimpan.");
+}
+
+
+function toggleFilterKas() {
+
+    const filter = document.getElementById("filterKas").value;
+
+    document.getElementById("filterManualKas").style.display =
+        filter === "custom" ? "block" : "none";
+
+    renderKas();
+}
+
+function cariPricelistRealtime(){
+
+    window.keywordPricelist =
+        document.getElementById("searchPricelist")
+        .value
+        .trim()
+        .toLowerCase();
+
+    renderAll();
+
+}
+
+function resetCariPricelist(){
+
+    window.keywordPricelist = "";
+
+    renderAll();
+
+}
+
+function gantiSumberHarga(){
+
+    if(document.getElementById("sumberHarga").value === "manual"){
+        document.getElementById("hargaPerKg").readOnly = false;
+        return;
+    }
+
+    document.getElementById("hargaPerKg").readOnly = true;
+
+    isiHargaPricelist();
+
+}
+
+function isiHargaPricelist(){
+
+    const selected = document.getElementById("produkDijual").value;
+
+    if(!selected) return;
+
+    const [tipe,id] = selected.split("_");
+
+    const item = state.pricelist.find(p =>
+        p.tipe === tipe &&
+        (
+            (tipe === "single" && p.berasId == id) ||
+            (tipe === "formula" && p.formulaId == id)
+        )
+    );
+
+    if(!item) return;
+
+    document.getElementById("hargaPerKg").value = item.harga;
+
+    hitungTotalPenjualan();
+
+}
+
+// =========================
+// CATATAN PENGETAHUAN
+// =========================
+
+function simpanPengetahuan(event) {
+
+    event.preventDefault();
+
+    const form = document.getElementById('formPengetahuan');
+
+    const judul =
+        document.getElementById('judulPengetahuan').value.trim();
+
+    const kategori =
+        document.getElementById('kategoriPengetahuan').value;
+
+    const isi =
+        document.getElementById('isiPengetahuan').value.trim();
+
+    const fotoInput =
+        document.getElementById('fotoPengetahuan');
+
+    const editId = form.dataset.editId;
+
+    if (!judul || !kategori || !isi) {
+        alert('Lengkapi data catatan terlebih dahulu.');
+        return;
+    }
+
+    // =========================
+    // MODE EDIT
+    // =========================
+
+    if (editId) {
+
+        const item = state.pengetahuan.find(
+            x => x.id == Number(editId)
+        );
+
+        if (!item) {
+            alert('Catatan tidak ditemukan.');
+            return;
+        }
+
+        item.judul = judul;
+        item.kategori = kategori;
+        item.isi = isi;
+
+        // Jika upload foto baru
+        if (fotoInput.files && fotoInput.files[0]) {
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+
+                item.foto = e.target.result;
+
+                saveData();
+
+                form.reset();
+                delete form.dataset.editId;
+
+                document.querySelector(
+                    '#modalPengetahuan .section-title'
+                ).innerText = 'Tambah Catatan Pengetahuan';
+
+                tutupModal('modalPengetahuan');
+
+                alert('Catatan berhasil diperbarui.');
+            };
+
+            reader.readAsDataURL(fotoInput.files[0]);
+
+        } else {
+
+            // Tidak upload foto baru,
+            // foto lama tetap dipertahankan.
+
+            saveData();
+
+            form.reset();
+            delete form.dataset.editId;
+
+            document.querySelector(
+                '#modalPengetahuan .section-title'
+            ).innerText = 'Tambah Catatan Pengetahuan';
+
+            tutupModal('modalPengetahuan');
+
+            alert('Catatan berhasil diperbarui.');
+        }
+
+        return;
+    }
+
+    // =========================
+    // MODE TAMBAH
+    // =========================
+
+    const simpanDataPengetahuan = (foto = '') => {
+
+        const catatanBaru = {
+
+            id: Date.now(),
+
+            judul: judul,
+
+            kategori: kategori,
+
+            isi: isi,
+
+            foto: foto,
+
+            tanggal: new Date()
+                .toLocaleDateString('id-ID')
+        };
+
+        state.pengetahuan.unshift(catatanBaru);
+
+        saveData();
+
+        form.reset();
+
+        tutupModal('modalPengetahuan');
+
+        alert('Catatan pengetahuan berhasil disimpan.');
+    };
+
+    if (fotoInput.files && fotoInput.files[0]) {
+
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            simpanDataPengetahuan(e.target.result);
+        };
+
+        reader.readAsDataURL(fotoInput.files[0]);
+
+    } else {
+
+        simpanDataPengetahuan('');
+    }
+}
+
+function hapusPengetahuan(id) {
+
+    const item = state.pengetahuan.find(
+        x => x.id == id
+    );
+
+    if (!item) {
+        alert('Catatan tidak ditemukan.');
+        return;
+    }
+
+    if (!confirm(
+        `Hapus catatan "${item.judul}"?`
+    )) {
+        return;
+    }
+
+    state.pengetahuan =
+        state.pengetahuan.filter(
+            x => x.id != id
+        );
+
+    saveData();
+
+    alert('Catatan berhasil dihapus.');
+}
+// =========================
+// RENDER CATATAN PENGETAHUAN
+// =========================
+
+function renderPengetahuan() {
+
+    const container = document.getElementById('pengetahuanList');
+
+    if (!container) return;
+
+    if (!state.pengetahuan || state.pengetahuan.length === 0) {
+
+        container.innerHTML = `
+            <div style="
+                text-align:center;
+                padding:30px 15px;
+                color:var(--muted);
+            ">
+                <i class="fa-solid fa-book-open"
+                   style="font-size:35px;margin-bottom:12px;">
+                </i>
+
+                <div style="font-weight:700;">
+                    Belum Ada Catatan
+                </div>
+
+                <small>
+                    Tambahkan pengetahuan atau informasi penting
+                    menggunakan tombol + Tambah.
+                </small>
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = state.pengetahuan.map(item => {
+
+        return `
+            <div class="item" style="
+                display:block;
+                padding:16px 0;
+            ">
+
+                ${item.foto ? `
+                    <img
+                        src="${item.foto}"
+                        style="
+                            width:100%;
+                            max-height:220px;
+                            object-fit:cover;
+                            border-radius:12px;
+                            margin-bottom:12px;
+                        "
+                    >
+                ` : ''}
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:flex-start;
+                    gap:10px;
+                ">
+
+                    <div style="flex:1;">
+
+                        <b style="
+                            font-size:15px;
+                            display:block;
+                            margin-bottom:7px;
+                        ">
+                            ${item.judul}
+                        </b>
+
+                        <span class="badge badge-info">
+                            ${item.kategori}
+                        </span>
+
+                    </div>
+
+                    <small style="
+                        color:var(--muted);
+                        white-space:nowrap;
+                    ">
+                        ${item.tanggal}
+                    </small>
+
+                </div>
+
+                <div style="
+                    margin-top:12px;
+                    font-size:13px;
+                    line-height:1.7;
+                    color:#4b5563;
+                    white-space:pre-line;
+                ">
+                    ${item.isi}
+                </div>
+
+<div style="
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    margin-top:14px;
+">
+
+    <button
+        type="button"
+        class="btn-secondary"
+        onclick="editPengetahuan(${item.id})">
+        <i class="fa-solid fa-pen"></i> Edit
+    </button>
+
+    <button
+        type="button"
+        class="btn-danger"
+        onclick="hapusPengetahuan(${item.id})">
+        <i class="fa-solid fa-trash"></i> Hapus
+    </button>
+
+</div>
+
+            </div>
+        `;
+
+    }).join('');
+}
+
+function editPengetahuan(id) {
+
+    const item = state.pengetahuan.find(x => x.id == id);
+
+    if (!item) {
+        alert('Catatan tidak ditemukan.');
+        return;
+    }
+
+    document.getElementById('judulPengetahuan').value = item.judul;
+    document.getElementById('kategoriPengetahuan').value = item.kategori;
+    document.getElementById('isiPengetahuan').value = item.isi;
+
+    // Simpan ID yang sedang diedit
+    document.getElementById('formPengetahuan').dataset.editId = id;
+
+    // Foto dikosongkan agar foto lama tidak tertimpa
+    document.getElementById('fotoPengetahuan').value = '';
+
+    document.querySelector('#modalPengetahuan .section-title').innerText =
+        'Edit Catatan Pengetahuan';
+    bukaModal('modalPengetahuan');
+}
+
+function simpanEditBeras(event) {
+    event.preventDefault();
+
+    const id = Number(
+        document.getElementById("editBerasId").value
+    );
+
+    const nama = document
+        .getElementById("editNamaBeras")
+        .value
+        .trim();
+
+    const harga = Number(
+        document.getElementById("editHargaBeras").value
+    );
+
+    const fotoInput =
+        document.getElementById("editFotoBeras");
+
+    const beras = state.beras.find(b => b.id == id);
+
+    if (!beras) {
+        alert("Data beras tidak ditemukan!");
+        return;
+    }
+
+    if (!nama) {
+        alert("Nama beras wajib diisi!");
+        return;
+    }
+
+    if (!harga || harga <= 0) {
+        alert("Harga modal tidak valid!");
+        return;
+    }
+
+    // Update data utama
+    beras.nama = nama;
+    beras.harga = harga;
+
+    // Jika memilih foto baru
+    if (fotoInput.files && fotoInput.files[0]) {
+
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+
+            beras.foto = e.target.result;
+
+            saveData();
+
+            tutupModal("modalEditBeras");
+
+            alert("Data master beras berhasil diperbarui.");
+        };
+
+        reader.readAsDataURL(fotoInput.files[0]);
+
+    } else {
+
+        // Tidak memilih foto baru,
+        // foto lama tetap dipertahankan
+        saveData();
+
+        tutupModal("modalEditBeras");
+
+        alert("Data master beras berhasil diperbarui.");
+    }
+}
+function editSales(id) {
+
+    const sales = state.sales.find(s => s.id == id);
+
+    if (!sales) {
+        alert("Data transaksi penjualan tidak ditemukan!");
+        return;
+    }
+
+    // Simpan ID transaksi yang sedang diedit
+    document.getElementById("editSalesId").value = sales.id;
+
+    // Isi data lama ke form
+    document.getElementById("editSalesTanggal").value = sales.tanggal;
+
+    document.getElementById("editSalesJumlahKg").value =
+        Number(sales.jumlahKg);
+
+    document.getElementById("editSalesHargaPerKg").value =
+        Number(sales.hargaPerKg);
+
+    document.getElementById("editSalesTotalHarga").value =
+        Number(sales.totalHarga);
+
+    bukaModal("modalEditSales");
+}
+
+
+function simpanEditSales(event) {
+
+    event.preventDefault();
+
+    const id = Number(
+        document.getElementById("editSalesId").value
+    );
+
+    const sales = state.sales.find(s => s.id == id);
+
+    if (!sales) {
+        alert("Transaksi tidak ditemukan!");
+        return;
+    }
+
+    const tanggalBaru =
+        document.getElementById("editSalesTanggal").value;
+
+    const jumlahBaru =
+        Number(document.getElementById("editSalesJumlahKg").value);
+
+    const hargaBaru =
+        Number(document.getElementById("editSalesHargaPerKg").value);
+
+    const totalBaru =
+        jumlahBaru * hargaBaru;
+
+
+    if (!tanggalBaru) {
+        alert("Tanggal transaksi wajib diisi!");
+        return;
+    }
+
+    if (jumlahBaru <= 0) {
+        alert("Jumlah Kg harus lebih dari 0!");
+        return;
+    }
+
+    if (hargaBaru <= 0) {
+        alert("Harga jual harus lebih dari 0!");
+        return;
+    }
+
+
+    /*
+    ==========================================
+    KEMBALIKAN STOK TRANSAKSI LAMA
+    ==========================================
+    */
+
+    let produkDitemukan = false;
+
+    // Jika penjualan berasal dari Master Beras
+    const beras = state.beras.find(
+        b => b.nama === sales.berasNama
+    );
+
+    if (beras) {
+
+        // Kembalikan stok transaksi lama
+        beras.stok =
+            Number(beras.stok || 0) +
+            Number(sales.jumlahKg || 0);
+
+        // Cek stok untuk transaksi baru
+        if (Number(beras.stok) < jumlahBaru) {
+
+            // Batalkan pengembalian stok
+            beras.stok =
+                Number(beras.stok || 0) -
+                Number(sales.jumlahKg || 0);
+
+            alert(
+                `Stok ${beras.nama} tidak mencukupi! ` +
+                `Stok tersedia: ${beras.stok} Kg`
+            );
+
+            return;
+        }
+
+        // Kurangi stok sesuai jumlah baru
+        beras.stok =
+            Number(beras.stok) -
+            jumlahBaru;
+
+        produkDitemukan = true;
+    }
+
+
+    /*
+    ==========================================
+    JIKA PRODUK HASIL BLENDING
+    ==========================================
+    */
+
+    if (!produkDitemukan &&
+        sales.berasNama.startsWith("Hasil Blending:")) {
+
+        const namaFormula =
+            sales.berasNama.replace(
+                "Hasil Blending: ",
+                ""
+            );
+
+        const formula = state.formula.find(
+            f => f.nama === namaFormula
+        );
+
+        if (formula) {
+
+            const stokLama =
+                Number(state.stokBlending[formula.id] || 0);
+
+            // Kembalikan stok lama
+            const stokSetelahKembali =
+                stokLama +
+                Number(sales.jumlahKg || 0);
+
+            // Cek stok baru
+            if (stokSetelahKembali < jumlahBaru) {
+
+                alert(
+                    `Stok hasil blending ${formula.nama} ` +
+                    `tidak mencukupi! ` +
+                    `Stok tersedia: ${stokSetelahKembali} Kg`
+                );
+
+                return;
+            }
+
+            state.stokBlending[formula.id] =
+                stokSetelahKembali -
+                jumlahBaru;
+
+            produkDitemukan = true;
+        }
+    }
+
+
+    if (!produkDitemukan) {
+        alert(
+            "Produk transaksi lama tidak dapat ditemukan. " +
+            "Edit dibatalkan agar stok tidak rusak."
+        );
+        return;
+    }
+
+
+    /*
+    ==========================================
+    UPDATE DATA SALES
+    ==========================================
+    */
+
+    sales.tanggal = tanggalBaru;
+    sales.jumlahKg = jumlahBaru;
+    sales.hargaPerKg = hargaBaru;
+    sales.totalHarga = totalBaru;
+
+
+    /*
+    ==========================================
+    UPDATE BUKU KAS
+    ==========================================
+    */
+
+    let kas = null;
+
+    if (sales.kasId) {
+
+        kas = state.kas.find(
+            k => k.id == sales.kasId
+        );
+    }
+
+    if (kas) {
+
+        kas.tanggal = tanggalBaru;
+        kas.nominal = totalBaru;
+        kas.keterangan = sales.berasNama;
+
+    } else {
+
+        // Jika transaksi lama belum memiliki kasId
+        // buat pencatatan kas baru
+        const kasIdBaru = Date.now() + 1;
+
+        sales.kasId = kasIdBaru;
+
+        state.kas.unshift({
+            id: kasIdBaru,
+            jenis: "masuk",
+            tanggal: tanggalBaru,
+            kategori: "Penjualan",
+            keterangan: sales.berasNama,
+            nominal: totalBaru
+        });
+    }
+
+
+    saveData();
+
+    tutupModal("modalEditSales");
+
+    alert("Transaksi penjualan berhasil diperbarui!");
+}
+
+function editFormula(id) {
+
+    const formula = state.formula.find(f => f.id == id);
+
+    if (!formula) {
+        alert("Formula tidak ditemukan!");
+        return;
+    }
+
+    // Simpan ID formula
+    document.getElementById("editFormulaId").value = formula.id;
+
+    // Isi nama
+    document.getElementById("editNamaFormula").value =
+        formula.nama || "";
+
+    // Kosongkan bahan lama
+    const container =
+        document.getElementById("containerEditBahanFormula");
+
+    container.innerHTML = "";
+
+    // Masukkan bahan lama
+    if (formula.items && formula.items.length > 0) {
+
+        formula.items.forEach(item => {
+
+            tambahBarisEditBahan(
+                item.berasId,
+                item.pct
+            );
+
+        });
+
+    } else {
+
+        tambahBarisEditBahan("", "");
+
+    }
+
+    // Buka popup
+    bukaModal("modalEditFormula");
+}
+
+function tambahBarisEditBahan(
+    berasId = "",
+    pct = ""
+) {
+
+    const container =
+        document.getElementById(
+            "containerEditBahanFormula"
+        );
+
+    const index = container.children.length;
+
+    const div = document.createElement("div");
+
+    div.className =
+        "form-row ingredient-row edit-ingredient-row";
+
+    div.style.marginBottom = "10px";
+
+
+    let selectOptions = state.beras.map(b =>
+
+        `<option
+            value="${b.id}"
+            ${b.id == berasId ? "selected" : ""}
+        >
+            ${b.nama}
+        </option>`
+
+    ).join("");
+
+
+    if (state.beras.length === 0) {
+
+        selectOptions =
+            `<option value="">
+                Belum Ada Data Master Beras
+            </option>`;
+
+    }
+
+
+    div.innerHTML = `
+
+        <div
+            class="form-group"
+            style="flex:2;margin-bottom:0;"
+        >
+
+            <label>
+                ${index === 0
+                    ? "Bahan Utama"
+                    : "Bahan Campuran " + index}
+            </label>
+
+            <select
+                class="edit-formula-bahan-select"
+                required
+            >
+
+                ${selectOptions}
+
+            </select>
+
+        </div>
+
+
+        <div
+            class="form-group"
+            style="flex:1;margin-bottom:0;"
+        >
+
+            <label>Persen (%)</label>
+
+            <input
+                type="number"
+                class="edit-formula-pct-input"
+                required
+                min="1"
+                max="100"
+                value="${pct}"
+                placeholder="0"
+            >
+
+        </div>
+
+
+        ${
+            index > 0
+            ?
+            `
+            <button
+                type="button"
+                class="btn-danger"
+                style="height:40px;"
+                onclick="this.parentElement.remove()"
+            >
+
+                <i class="fa-solid fa-trash"></i>
+
+            </button>
+            `
+            :
+            ""
+        }
+
+    `;
+
+    container.appendChild(div);
+}
+
+function simpanEditFormula(event) {
+
+    event.preventDefault();
+
+    const id = Number(
+        document.getElementById("editFormulaId").value
+    );
+
+    const formula = state.formula.find(
+        f => f.id == id
+    );
+
+    if (!formula) {
+        alert("Formula tidak ditemukan!");
+        return;
+    }
+
+
+    const namaBaru =
+        document.getElementById("editNamaFormula").value.trim();
+
+    const rows =
+        document.querySelectorAll(
+            "#containerEditBahanFormula .edit-ingredient-row"
+        );
+
+
+    if (!namaBaru) {
+        alert("Nama formula wajib diisi!");
+        return;
+    }
+
+
+    if (rows.length === 0) {
+        alert("Tambahkan minimal 1 bahan baku!");
+        return;
+    }
+
+
+    let totalPct = 0;
+    let itemsBaru = [];
+
+
+    for (const row of rows) {
+
+        const berasId =
+            row.querySelector(
+                ".edit-formula-bahan-select"
+            ).value;
+
+        const pct =
+            Number(
+                row.querySelector(
+                    ".edit-formula-pct-input"
+                ).value
+            ) || 0;
+
+
+        if (!berasId) {
+
+            alert(
+                "Silakan pilih jenis beras untuk semua bahan!"
+            );
+
+            return;
+        }
+
+
+        if (pct <= 0) {
+
+            alert(
+                "Persentase bahan harus lebih dari 0%!"
+            );
+
+            return;
+        }
+
+
+        totalPct += pct;
+
+        itemsBaru.push({
+            berasId,
+            pct
+        });
+
+    }
+
+
+    if (totalPct !== 100) {
+
+        alert(
+            `Total persentase harus tepat 100%!\n\n` +
+            `Saat ini: ${totalPct}%`
+        );
+
+        return;
+    }
+
+
+    /*
+    ==========================================
+    SIMPAN FOTO
+    ==========================================
+    */
+
+    const file =
+        document.getElementById(
+            "editFotoFormula"
+        ).files[0];
+
+
+    function lanjutSimpan(fotoBaru) {
+
+        /*
+        Simpan nama lama untuk
+        memperbarui referensi transaksi.
+        */
+
+        const namaLama = formula.nama;
+
+
+        formula.nama = namaBaru;
+
+        formula.items = itemsBaru;
+
+
+        if (fotoBaru !== undefined) {
+
+            formula.foto = fotoBaru;
+
+        }
+
+
+        /*
+        ==========================================
+        UPDATE REFERENSI SALES
+        ==========================================
+        */
+
+        state.sales.forEach(s => {
+
+            if (
+                s.berasNama ===
+                `Hasil Blending: ${namaLama}`
+            ) {
+
+                s.berasNama =
+                    `Hasil Blending: ${namaBaru}`;
+
+            }
+
+        });
+
+
+        /*
+        ==========================================
+        UPDATE RIWAYAT BATCH
+        ==========================================
+        */
+
+        state.batch.forEach(batch => {
+
+            if (batch.formulaNama === namaLama) {
+
+                batch.formulaNama = namaBaru;
+
+            }
+
+        });
+
+
+        /*
+        ==========================================
+        SIMPAN
+        ==========================================
+        */
+
+        saveData();
+
+        renderAll();
+
+        tutupModal(
+            "modalEditFormula"
+        );
+
+        document
+            .getElementById("formEditFormula")
+            .reset();
+
+
+        alert(
+            "Formula berhasil diperbarui!"
+        );
+
+    }
+
+
+    if (file) {
+
+        const reader =
+            new FileReader();
+
+        reader.onload = function(e) {
+
+            lanjutSimpan(
+                e.target.result
+            );
+
+        };
+
+        reader.readAsDataURL(file);
+
+    } else {
+
+        // Pertahankan foto lama
+        lanjutSimpan(
+            undefined
+        );
+
+    }
+
+}
+
+</script>
+<!-- ================= MODAL KAS ================= -->
+<div class="modal" id="modalKas">
+    <div class="modal-content">
+
+        <div class="section-title">
+            Tambah Transaksi Kas
+        </div>
+
+        <form id="formKas" onsubmit="simpanKas(event)">
+
+            <div class="form-group">
+                <label>Jenis Transaksi</label>
+                <select id="kasJenis">
+                    <option value="masuk">Kas Masuk</option>
+                    <option value="keluar">Kas Keluar</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Tanggal</label>
+                <input type="date" id="kasTanggal" required>
+            </div>
+
+            <div class="form-group">
+                <label>Nominal</label>
+                <input type="number" id="kasNominal" required>
+            </div>
+
+            <div class="form-group">
+    <label>Kategori</label>
+
+    <select id="kasKategori" required>
+        <option value="">Pilih Kategori</option>
+        <option value="Karung">Karung</option>
+        <option value="Plastik">Plastik</option>
+        <option value="Biaya Angkut">Biaya Angkut</option>
+        <option value="BBM">BBM</option>
+        <option value="Biaya Operasional">Biaya Operasional</option>
+        <option value="Makan Harian">Makan Harian</option>
+        <option value="Kesehatan">Kesehatan</option>
+        <option value="Bodycare">Bodycare</option>
+    </select>
+</div>
+
+            <div class="form-group">
+                <label>Keterangan</label>
+                <input type="text" id="kasKeterangan">
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary"
+                    onclick="tutupModal('modalKas')">Batal</button>
+
+                <button type="submit" class="btn-primary">
+                    Simpan
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js")
+            .then(() => console.log("DIRRICE Service Worker aktif"))
+            .catch(err => console.error("SW Error:", err));
+    });
+}
+</script>
+  
+</body>
+</html>
